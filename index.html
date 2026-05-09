@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Προανάγνωση · ΣΥΝΟΙΔΑ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:  #8DC63F;
+  --red:    #ED1C24;
+  --blue:   #00AEEF;
+  --orange: #F7941D;
+  --grey:   #58595B;
+  --bg:     #FFFFFF;
+  --bg-alt: #FAFAFA;
+  --bg-soft:#F5F5F5;
+  --green-soft:  #8DC63F1A;
+  --blue-soft:   #00AEEF1A;
+  --red-soft:    #ED1C241A;
+  --orange-soft: #F7941D1A;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Roboto, sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  color: var(--grey);
+}
+
+/* ==== ΣΥΝΟΙΔΑ Signature: horizontal brand strips ==== */
+.brand-strips {
+  display: flex;
+  height: 8px;
+  width: 100%;
+  flex-shrink: 0;
+}
+.brand-strips > div { flex: 1; }
+.brand-strips .s1 { background: var(--green);  }
+.brand-strips .s2 { background: var(--red);    }
+.brand-strips .s3 { background: var(--blue);   }
+.brand-strips .s4 { background: var(--orange); }
+.brand-strips .s5 { background: var(--grey);   }
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  flex: 1;
+  padding: 18px 22px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.screen[hidden] { display: none; }
+
+/* ==== Header (logo + subtitle) ==== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.app-header .brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.app-header .brand .label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--grey);
+  opacity: 0.55;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.app-header .brand .sub {
+  font-size: 13px;
+  color: var(--grey);
+  opacity: 0.7;
+  font-weight: 400;
+}
+.app-header img.logo {
+  height: 56px;
+  width: auto;
+}
+
+/* ==== Home title ==== */
+h1 {
+  text-align: center;
+  color: var(--grey);
+  margin: 22px 0 6px;
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+h1 .accent {
+  display: inline-block;
+  width: 56px;
+  height: 4px;
+  background: var(--green);
+  border-radius: 2px;
+  vertical-align: middle;
+  margin: 0 14px 8px;
+}
+.subhead {
+  text-align: center;
+  color: var(--grey);
+  opacity: 0.7;
+  font-size: 16px;
+  margin: 0 0 30px;
+  font-weight: 400;
+}
+
+h2 {
+  text-align: center;
+  color: var(--grey);
+  margin: 4px 0 14px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.section-label {
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: var(--grey);
+  opacity: 0.6;
+  margin: 24px 0 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ==== Choice buttons (length, mode) ==== */
+.choice-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.choice-btn {
+  font-family: inherit;
+  font-size: 22px;
+  padding: 16px 26px;
+  border: 2px solid #E5E7EB;
+  background: white;
+  color: var(--grey);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  min-width: 80px;
+  transition: transform 0.1s, background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+}
+.choice-btn:hover { border-color: var(--green); }
+.choice-btn:active { transform: scale(0.96); }
+.choice-btn.selected {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+  box-shadow: 0 4px 14px rgba(141,198,63,0.35);
+}
+
+/* ==== Pill CTA: Start ==== */
+.start-btn {
+  font-family: inherit;
+  font-size: 22px;
+  padding: 18px 56px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 32px auto 0;
+  display: block;
+  box-shadow: 0 6px 18px rgba(141,198,63,0.35);
+  transition: transform 0.1s, box-shadow 0.18s, background 0.18s;
+}
+.start-btn:disabled {
+  background: #D1D5DB;
+  color: white;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.start-btn:not(:disabled):active { transform: scale(0.97); }
+
+/* ==== Top bar (in-game) ==== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.back-btn, .new-word-btn, .check-btn {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.1s, background 0.18s;
+}
+.back-btn {
+  background: white;
+  color: var(--grey);
+  border-color: #E5E7EB;
+}
+.back-btn:hover { border-color: var(--grey); }
+.new-word-btn {
+  background: var(--orange);
+  color: white;
+  box-shadow: 0 3px 10px rgba(247,148,29,0.30);
+}
+.check-btn {
+  background: var(--green);
+  color: white;
+  font-size: 19px;
+  padding: 14px 30px;
+  box-shadow: 0 4px 14px rgba(141,198,63,0.35);
+}
+.back-btn:active, .new-word-btn:active, .check-btn:active { transform: scale(0.96); }
+
+/* ==== Listen button ==== */
+.listen-btn {
+  font-family: inherit;
+  font-size: 22px;
+  padding: 14px 32px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 14px auto;
+  display: block;
+  box-shadow: 0 5px 14px rgba(0,174,239,0.35);
+  transition: transform 0.1s;
+}
+.listen-btn:active { transform: scale(0.97); }
+
+/* ==== Slots & cards ==== */
+.slots, .read-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px auto;
+  padding: 14px;
+  background: var(--bg-soft);
+  border-radius: 20px;
+  min-height: 130px;
+  max-width: 100%;
+}
+
+.slot {
+  width: 95px;
+  height: 115px;
+  border: 3px dashed #D1D5DB;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  flex-shrink: 0;
+  transition: border-color 0.18s, background 0.18s;
+}
+.slot.filled { border-style: solid; border-color: var(--green); background: white; }
+.slot.correct { border-color: var(--green); background: var(--green-soft); }
+.slot.wrong { border-color: var(--red); background: var(--red-soft); animation: shake 0.4s; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.palette {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 14px;
+  background: var(--bg-alt);
+  border: 1px solid #EEE;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+.card {
+  width: 90px;
+  height: 110px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  font-weight: 700;
+  transition: transform 0.1s, box-shadow 0.18s, border-color 0.18s;
+  flex-shrink: 0;
+  touch-action: none;
+}
+.card .emoji { font-size: 38px; line-height: 1; pointer-events: none; }
+.card .text { font-size: 24px; color: var(--grey); margin-top: 6px; font-weight: 700; pointer-events: none; }
+.card:hover { border-color: var(--green); }
+.card.selected {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px var(--blue-soft);
+  transform: scale(1.05);
+}
+.card.dragging {
+  cursor: grabbing;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.22);
+  transform: scale(1.08) rotate(-1.5deg);
+  border-color: var(--green);
+  z-index: 9999;
+  opacity: 0.96;
+  transition: none;
+}
+.slot.drop-target { border-color: var(--green); background: var(--green-soft); border-style: solid; }
+.card:active { transform: scale(0.94); }
+
+.feedback {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 10px 0;
+  min-height: 32px;
+  color: var(--grey);
+}
+.feedback.success { color: var(--green); }
+.feedback.error { color: var(--red); }
+
+.action-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.hint {
+  text-align: center;
+  color: var(--grey);
+  opacity: 0.6;
+  font-size: 14px;
+  margin: 4px 0 8px;
+  font-weight: 400;
+}
+
+/* ==== Footer ==== */
+.app-footer {
+  text-align: center;
+  padding: 14px 18px 18px;
+  color: var(--grey);
+  font-size: 12px;
+  opacity: 0.7;
+  font-weight: 400;
+}
+.app-footer .locations {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 600px) {
+  .screen { padding: 12px 14px 18px; }
+  .app-header img.logo { height: 44px; }
+  h1 { font-size: 30px; margin: 14px 0 4px; }
+  h2 { font-size: 17px; }
+  .subhead { font-size: 14px; margin-bottom: 18px; }
+  .section-label { font-size: 12px; margin: 18px 0 10px; }
+  .choice-btn { font-size: 17px; padding: 12px 18px; min-width: 60px; }
+  .start-btn { font-size: 18px; padding: 16px 40px; }
+  .listen-btn { font-size: 18px; padding: 12px 26px; }
+  .card, .slot { width: 72px; height: 92px; }
+  .card .emoji { font-size: 28px; }
+  .card .text { font-size: 18px; }
+  .slots, .read-row { gap: 5px; padding: 8px; min-height: 100px; }
+  .palette { gap: 5px; padding: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+<!-- Top brand strips -->
+<div class="brand-strips" aria-hidden="true">
+  <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+</div>
+
+<!-- HOME -->
+<div id="screen-home" class="screen">
+  <div class="app-header">
+    <div class="brand">
+      <span class="label">ΣΥΝΟΙΔΑ</span>
+      <span class="sub">Κέντρα Ειδικών Θεραπειών</span>
+    </div>
+    <img src="synoida-logo.png" alt="ΣΥΝΟΙΔΑ" class="logo">
+  </div>
+
+  <h1>Προανάγνωση<span class="accent"></span></h1>
+  <p class="subhead">Φτιάξε λέξεις από συλλαβές, διάβασε βήμα-βήμα</p>
+
+  <div class="section-label">Πόσες συλλαβές</div>
+  <div class="choice-row" id="length-choices">
+    <button class="choice-btn" data-len="2">2</button>
+    <button class="choice-btn" data-len="3">3</button>
+    <button class="choice-btn" data-len="4">4</button>
+    <button class="choice-btn" data-len="5">5</button>
+    <button class="choice-btn" data-len="6">6</button>
+  </div>
+
+  <div class="section-label">Διάλεξε τρόπο</div>
+  <div class="choice-row" id="mode-choices">
+    <button class="choice-btn" data-mode="A">🧩 Φτιάξε τη λέξη</button>
+    <button class="choice-btn" data-mode="B">📖 Διάβασε τη λέξη</button>
+  </div>
+
+  <button class="start-btn" id="start-btn" disabled>Ξεκίνα</button>
+</div>
+
+<!-- MODE A: Build -->
+<div id="screen-mode-a" class="screen" hidden>
+  <div class="app-header">
+    <div class="brand">
+      <span class="label">ΣΥΝΟΙΔΑ</span>
+      <span class="sub">Προανάγνωση</span>
+    </div>
+    <img src="synoida-logo.png" alt="ΣΥΝΟΙΔΑ" class="logo">
+  </div>
+  <div class="top-bar">
+    <button class="back-btn" data-action="home">← Πίσω</button>
+    <button class="new-word-btn" data-action="new-a">🔄 Νέα λέξη</button>
+  </div>
+  <h2>Άκουσε τη λέξη και βάλε τα κομματάκια στη σειρά</h2>
+  <button class="listen-btn" id="listen-a">🔊 Άκουσε</button>
+  <div class="slots" id="slots-a"></div>
+  <div class="hint" id="hint-a">Πάτησε ένα κομματάκι, μετά πάτησε σε μια θέση</div>
+  <div class="feedback" id="feedback-a"></div>
+  <div class="action-row">
+    <button class="check-btn" id="check-btn">✓ Έλεγχος</button>
+  </div>
+  <div class="palette" id="palette-a"></div>
+</div>
+
+<!-- MODE B: Read -->
+<div id="screen-mode-b" class="screen" hidden>
+  <div class="app-header">
+    <div class="brand">
+      <span class="label">ΣΥΝΟΙΔΑ</span>
+      <span class="sub">Προανάγνωση</span>
+    </div>
+    <img src="synoida-logo.png" alt="ΣΥΝΟΙΔΑ" class="logo">
+  </div>
+  <div class="top-bar">
+    <button class="back-btn" data-action="home">← Πίσω</button>
+    <button class="new-word-btn" data-action="new-b">🔄 Νέα λέξη</button>
+  </div>
+  <h2>Διάβασε τη λέξη συλλαβή-συλλαβή</h2>
+  <div class="read-row" id="read-row"></div>
+  <button class="listen-btn" id="listen-b">🔊 Άκουσε</button>
+</div>
+
+<!-- Footer -->
+<div class="app-footer">
+  <div class="locations">Αρτέμιδα · Σπάτα · Νέα Μάκρη · Μαραθώνας</div>
+  <div>www.synoida.gr · info@synoida.gr</div>
+</div>
+
+<!-- Bottom brand strips -->
+<div class="brand-strips" aria-hidden="true">
+  <div class="s1"></div><div class="s2"></div><div class="s3"></div><div class="s4"></div><div class="s5"></div>
+</div>
+
+</div><!-- /app-shell -->
+
+<script>
+// =========================================================
+// SYLLABLE CARDS  (CV from PDF + ου cards)
+// =========================================================
+const SYLLABLES = {
+  // π
+  "πα": { text: "πα", word: "πάπια",        emoji: "🦆" },
+  "πε": { text: "πε", word: "πεταλούδα",    emoji: "🦋" },
+  "πι": { text: "πι", word: "πιρούνι",      emoji: "🍴" },
+  "πο": { text: "πο", word: "ποτήρι",       emoji: "🥛" },
+  // ν
+  "να": { text: "να", word: "ναύτης",       emoji: "⚓" },
+  "νε": { text: "νε", word: "νερό",         emoji: "💧" },
+  "νι": { text: "νι", word: "νυχτερίδα",    emoji: "🦇" },
+  "νο": { text: "νο", word: "νότα",         emoji: "🎵" },
+  // ξ
+  "ξα": { text: "ξα", word: "ξανθή",        emoji: "👱" },
+  "ξε": { text: "ξε", word: "ξενοδοχείο",   emoji: "🏨" },
+  "ξι": { text: "ξι", word: "ξύλο",         emoji: "🪵" },
+  "ξο": { text: "ξο", word: "ξωτικό",       emoji: "🧚" },
+  // λ
+  "λα": { text: "λα", word: "λάμπα",        emoji: "💡" },
+  "λε": { text: "λε", word: "λεμόνι",       emoji: "🍋" },
+  "λι": { text: "λι", word: "λιοντάρι",     emoji: "🦁" },
+  "λο": { text: "λο", word: "λωτός",        emoji: "🪷" },
+  // γ
+  "γα": { text: "γα", word: "γάτα",         emoji: "🐱" },
+  "γε": { text: "γε", word: "γερανός",      emoji: "🏗️" },
+  "γι": { text: "γι", word: "γιαούρτι",     emoji: "🥛" },
+  "γο": { text: "γο", word: "γόμα",         emoji: "🩹" },
+  // β
+  "βα": { text: "βα", word: "βάτραχος",     emoji: "🐸" },
+  "βε": { text: "βε", word: "βέλος",        emoji: "🏹" },
+  "βι": { text: "βι", word: "βιβλίο",       emoji: "📖" },
+  "βο": { text: "βο", word: "βόλεϊ",        emoji: "🏐" },
+  // τ
+  "τα": { text: "τα", word: "ταξί",         emoji: "🚕" },
+  "τε": { text: "τε", word: "τέρας",        emoji: "👹" },
+  "τι": { text: "τι", word: "τηλεόραση",    emoji: "📺" },
+  "το": { text: "το", word: "τοστ",         emoji: "🍞" },
+  // μ
+  "μα": { text: "μα", word: "μαϊμού",       emoji: "🐵" },
+  "με": { text: "με", word: "μέλισσα",      emoji: "🐝" },
+  "μι": { text: "μι", word: "Μίκυ",         emoji: "🐭" },
+  "μο": { text: "μο", word: "μωρό",         emoji: "👶" },
+  // κ
+  "κα": { text: "κα", word: "καρέκλα",      emoji: "🪑" },
+  "κε": { text: "κε", word: "κεράσι",       emoji: "🍒" },
+  "κι": { text: "κι", word: "κιθάρα",       emoji: "🎸" },
+  "κο": { text: "κο", word: "κολοκύθα",     emoji: "🎃" },
+  // ζ
+  "ζα": { text: "ζα", word: "ζάρι",         emoji: "🎲" },
+  "ζε": { text: "ζε", word: "ζέβρα",        emoji: "🦓" },
+  "ζι": { text: "ζι", word: "ζιζάνιο",      emoji: "🌿" },
+  "ζο": { text: "ζο", word: "ζώο",          emoji: "🐾" },
+  // δ
+  "δα": { text: "δα", word: "δάσκαλος",     emoji: "👨‍🏫" },
+  "δε": { text: "δε", word: "δέντρο",       emoji: "🌳" },
+  "δι": { text: "δι", word: "δεινόσαυρος",  emoji: "🦕" },
+  "δο": { text: "δο", word: "δώρο",         emoji: "🎁" },
+  // θ
+  "θα": { text: "θα", word: "θάλασσα",      emoji: "🌊" },
+  "θε": { text: "θε", word: "θέατρο",       emoji: "🎭" },
+  "θι": { text: "θι", word: "θησαυρός",     emoji: "💎" },
+  "θο": { text: "θο", word: "θόλος",        emoji: "🏛️" },
+  // χ
+  "χα": { text: "χα", word: "χάρακας",      emoji: "📏" },
+  "χε": { text: "χε", word: "χελώνα",       emoji: "🐢" },
+  "χι": { text: "χι", word: "χιόνι",        emoji: "❄️" },
+  "χο": { text: "χο", word: "χορός",        emoji: "💃" },
+  // φ
+  "φα": { text: "φα", word: "φάλαινα",      emoji: "🐳" },
+  "φε": { text: "φε", word: "φεγγάρι",      emoji: "🌙" },
+  "φι": { text: "φι", word: "φύλλο",        emoji: "🍃" },
+  "φο": { text: "φο", word: "φωλιά",        emoji: "🪺" },
+  // ψ
+  "ψα": { text: "ψα", word: "ψάρι",         emoji: "🐟" },
+  "ψε": { text: "ψε", word: "ψεύτης",       emoji: "🤥" },
+  "ψι": { text: "ψι", word: "ψυγείο",       emoji: "🧊" },
+  "ψο": { text: "ψο", word: "ψωμί",         emoji: "🥖" },
+  // ρ
+  "ρα": { text: "ρα", word: "ρακέτα",       emoji: "🎾" },
+  "ρε": { text: "ρε", word: "ρέστα",        emoji: "💵" },
+  "ρι": { text: "ρι", word: "ρινόκερος",    emoji: "🦏" },
+  "ρο": { text: "ρο", word: "ρόδα",         emoji: "☸️" },
+  // σ
+  "σα": { text: "σα", word: "σαλιγκάρι",    emoji: "🐌" },
+  "σε": { text: "σε", word: "σέλα",         emoji: "🏇" },
+  "σι": { text: "σι", word: "σιτάρι",       emoji: "🌾" },
+  "σο": { text: "σο", word: "σοκολάτα",     emoji: "🍫" },
+  // ου  (additional)
+  "που": { text: "που", word: "πουλί",      emoji: "🐦" },
+  "λου": { text: "λου", word: "λουλούδι",   emoji: "🌸" },
+  "κου": { text: "κου", word: "κουτί",      emoji: "📦" },
+  "μου": { text: "μου", word: "μουσική",    emoji: "🎶" },
+  "σου": { text: "σου", word: "σούπα",      emoji: "🍲" },
+  "ρου": { text: "ρου", word: "ρούχα",      emoji: "👕" },
+  "του": { text: "του", word: "τούρτα",     emoji: "🎂" },
+  "βου": { text: "βου", word: "βουνό",      emoji: "⛰️" },
+  "γου": { text: "γου", word: "γουρούνι",   emoji: "🐷" },
+  "νου": { text: "νου", word: "νούμερο",    emoji: "🔢" },
+  "φου": { text: "φου", word: "φούσκα",     emoji: "🫧" },
+  "δου": { text: "δου", word: "δουλειά",    emoji: "🛠️" }
+};
+
+// =========================================================
+// WORD BANK  (curated, by syllable count)
+// Phonetic mapping baked in: η/υ/ει/οι→ι, ω→ο, αι→ε
+// =========================================================
+const WORDS = {
+  2: [
+    { text: "κότα",   syllables: ["κο","τα"] },
+    { text: "μάνα",   syllables: ["μα","να"] },
+    { text: "πίτα",   syllables: ["πι","τα"] },
+    { text: "πόδι",   syllables: ["πο","δι"] },
+    { text: "ψάρι",   syllables: ["ψα","ρι"] },
+    { text: "μέλι",   syllables: ["με","λι"] },
+    { text: "βάζο",   syllables: ["βα","ζο"] },
+    { text: "ζάρι",   syllables: ["ζα","ρι"] },
+    { text: "λάδι",   syllables: ["λα","δι"] },
+    { text: "μέρα",   syllables: ["με","ρα"] },
+    { text: "μάτι",   syllables: ["μα","τι"] },
+    { text: "χέρι",   syllables: ["χε","ρι"] },
+    { text: "φέτα",   syllables: ["φε","τα"] },
+    { text: "λάμα",   syllables: ["λα","μα"] },
+    { text: "σόδα",   syllables: ["σο","δα"] },
+    { text: "σούπα",  syllables: ["σου","πα"] },
+    { text: "κουτί",  syllables: ["κου","τι"] },
+    { text: "ρούχα",  syllables: ["ρου","χα"] },
+    { text: "βουνό",  syllables: ["βου","νο"] },
+    { text: "πουλί",  syllables: ["που","λι"] }
+  ],
+  3: [
+    { text: "πατάτα",     syllables: ["πα","τα","τα"] },
+    { text: "ψαλίδι",     syllables: ["ψα","λι","δι"] },
+    { text: "καλάθι",     syllables: ["κα","λα","θι"] },
+    { text: "σαλάτα",     syllables: ["σα","λα","τα"] },
+    { text: "καπέλο",     syllables: ["κα","πε","λο"] },
+    { text: "καρότο",     syllables: ["κα","ρο","το"] },
+    { text: "βελόνα",     syllables: ["βε","λο","να"] },
+    { text: "φασόλι",     syllables: ["φα","σο","λι"] },
+    { text: "καμήλα",     syllables: ["κα","μι","λα"] },
+    { text: "λεμόνι",     syllables: ["λε","μο","νι"] },
+    { text: "καλάμι",     syllables: ["κα","λα","μι"] },
+    { text: "ποτάμι",     syllables: ["πο","τα","μι"] },
+    { text: "μέλισσα",    syllables: ["με","λι","σα"] },
+    { text: "λάχανο",     syllables: ["λα","χα","νο"] },
+    { text: "χελώνα",     syllables: ["χε","λο","να"] },
+    { text: "λουλούδι",   syllables: ["λου","λου","δι"] },
+    { text: "γουρούνι",   syllables: ["γου","ρου","νι"] },
+    { text: "κουτάλι",    syllables: ["κου","τα","λι"] },
+    { text: "μηχανή",     syllables: ["μι","χα","νι"] },
+    { text: "μουσική",    syllables: ["μου","σι","κι"] }
+  ],
+  4: [
+    { text: "πεταλούδα",   syllables: ["πε","τα","λου","δα"] },
+    { text: "καραμέλα",    syllables: ["κα","ρα","με","λα"] },
+    { text: "βατόμουρο",   syllables: ["βα","το","μου","ρο"] },
+    { text: "καλοκαίρι",   syllables: ["κα","λο","κε","ρι"] },
+    { text: "ζαχαρωτό",    syllables: ["ζα","χα","ρο","το"] },
+    { text: "καραβάκι",    syllables: ["κα","ρα","βα","κι"] },
+    { text: "ποδαράκι",    syllables: ["πο","δα","ρα","κι"] },
+    { text: "καλημέρα",    syllables: ["κα","λι","με","ρα"] },
+    { text: "γαλατάκι",    syllables: ["γα","λα","τα","κι"] },
+    { text: "ψαλιδάκι",    syllables: ["ψα","λι","δα","κι"] },
+    { text: "φαναράκι",    syllables: ["φα","να","ρα","κι"] },
+    { text: "τηλέφωνο",    syllables: ["τι","λε","φο","νο"] },
+    { text: "καλαμάρι",    syllables: ["κα","λα","μα","ρι"] },
+    { text: "πιπεράτο",    syllables: ["πι","πε","ρα","το"] },
+    { text: "φασολάκι",    syllables: ["φα","σο","λα","κι"] },
+    { text: "λεμονάδα",    syllables: ["λε","μο","να","δα"] },
+    { text: "καθαρίζω",    syllables: ["κα","θα","ρι","ζο"] },
+    { text: "μαγαζάκι",    syllables: ["μα","γα","ζα","κι"] },
+    { text: "λαχανικό",    syllables: ["λα","χα","νι","κο"] },
+    { text: "πατατάκι",    syllables: ["πα","τα","τα","κι"] }
+  ],
+  5: [
+    { text: "ψαροκόκαλο",      syllables: ["ψα","ρο","κο","κα","λο"] },
+    { text: "καλοκαιρινό",     syllables: ["κα","λο","κε","ρι","νο"] },
+    { text: "ψαροκαλάθι",      syllables: ["ψα","ρο","κα","λα","θι"] },
+    { text: "καραμελάκι",      syllables: ["κα","ρα","με","λα","κι"] },
+    { text: "πεταλουδάκι",     syllables: ["πε","τα","λου","δα","κι"] },
+    { text: "καλοκαιράκι",     syllables: ["κα","λο","κε","ρα","κι"] },
+    { text: "καλαμαράκι",      syllables: ["κα","λα","μα","ρα","κι"] },
+    { text: "τηλεφωνάκι",      syllables: ["τι","λε","φο","να","κι"] },
+    { text: "ζαχαρόνερο",      syllables: ["ζα","χα","ρο","νε","ρο"] },
+    { text: "λεμονόπιτα",      syllables: ["λε","μο","νο","πι","τα"] },
+    { text: "ζαχαρόπιτα",      syllables: ["ζα","χα","ρο","πι","τα"] },
+    { text: "λαχανόπιτα",      syllables: ["λα","χα","νο","πι","τα"] },
+    { text: "βασιλόπιτα",      syllables: ["βα","σι","λο","πι","τα"] },
+    { text: "καλημερούλα",     syllables: ["κα","λι","με","ρου","λα"] },
+    { text: "καλημεράκι",      syllables: ["κα","λι","με","ρα","κι"] },
+    { text: "γουρουνόπουλο",   syllables: ["γου","ρου","νο","που","λο"] }
+  ],
+  6: [
+    { text: "ψαροκαλαμάκι",    syllables: ["ψα","ρο","κα","λα","μα","κι"] },
+    { text: "πατατοσαλάτα",    syllables: ["πα","τα","το","σα","λα","τα"] },
+    { text: "λαχανοκαλάθι",    syllables: ["λα","χα","νο","κα","λα","θι"] },
+    { text: "ζαχαροκάλαμο",    syllables: ["ζα","χα","ρο","κα","λα","μο"] },
+    { text: "λαχανοσαλάτα",    syllables: ["λα","χα","νο","σα","λα","τα"] },
+    { text: "ψαροκαλαθάκι",    syllables: ["ψα","ρο","κα","λα","θα","κι"] },
+    { text: "φασολοσαλάτα",    syllables: ["φα","σο","λο","σα","λα","τα"] }
+  ]
+};
+
+// =========================================================
+// APP STATE
+// =========================================================
+const $  = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+let selected      = { length: null, mode: null };
+let currentWord   = null;
+let currentLength = null;
+let currentMode   = null;
+let selectedCardEl = null;
+let lastWordIdx   = {};
+let greekVoice    = null;
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  greekVoice = voices.find(v => /^el(-|_|$)/i.test(v.lang)) || null;
+}
+if (typeof speechSynthesis !== "undefined") {
+  speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "el-GR";
+  if (greekVoice) u.voice = greekVoice;
+  u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// =========================================================
+// HOME SCREEN
+// =========================================================
+$$("#length-choices .choice-btn").forEach(b => {
+  b.addEventListener("click", () => {
+    $$("#length-choices .choice-btn").forEach(x => x.classList.remove("selected"));
+    b.classList.add("selected");
+    selected.length = parseInt(b.dataset.len, 10);
+    updateStartBtn();
+  });
+});
+
+$$("#mode-choices .choice-btn").forEach(b => {
+  b.addEventListener("click", () => {
+    $$("#mode-choices .choice-btn").forEach(x => x.classList.remove("selected"));
+    b.classList.add("selected");
+    selected.mode = b.dataset.mode;
+    updateStartBtn();
+  });
+});
+
+function updateStartBtn() {
+  $("#start-btn").disabled = !(selected.length && selected.mode);
+}
+
+$("#start-btn").addEventListener("click", () => {
+  if (!selected.length || !selected.mode) return;
+  startRound(selected.length, selected.mode);
+});
+
+$$(".back-btn").forEach(b => b.addEventListener("click", goHome));
+$('[data-action="new-a"]').addEventListener("click", () => startRound(currentLength, "A"));
+$('[data-action="new-b"]').addEventListener("click", () => startRound(currentLength, "B"));
+
+function goHome() {
+  if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
+  $("#screen-home").hidden    = false;
+  $("#screen-mode-a").hidden  = true;
+  $("#screen-mode-b").hidden  = true;
+}
+
+// =========================================================
+// ROUND
+// =========================================================
+function startRound(len, mode) {
+  currentLength = len;
+  currentMode   = mode;
+  const candidates = WORDS[len];
+  if (!candidates || candidates.length === 0) {
+    alert("Δεν υπάρχουν ακόμη λέξεις για αυτό το μήκος.");
+    return;
+  }
+  let idx;
+  if (candidates.length === 1) {
+    idx = 0;
+  } else {
+    do {
+      idx = Math.floor(Math.random() * candidates.length);
+    } while (idx === lastWordIdx[len]);
+  }
+  lastWordIdx[len] = idx;
+  currentWord = candidates[idx];
+
+  if (mode === "A") renderModeA();
+  else              renderModeB();
+}
+
+// =========================================================
+// MODE A: Build the word
+// =========================================================
+function renderModeA() {
+  $("#screen-home").hidden    = true;
+  $("#screen-mode-b").hidden  = true;
+  $("#screen-mode-a").hidden  = false;
+
+  const slotsEl = $("#slots-a");
+  slotsEl.innerHTML = "";
+  for (let i = 0; i < currentWord.syllables.length; i++) {
+    const s = document.createElement("div");
+    s.className   = "slot";
+    s.dataset.idx = String(i);
+    slotsEl.appendChild(s);
+  }
+
+  const needed     = currentWord.syllables.slice();
+  const usedSet    = new Set(needed);
+  const allKeys    = Object.keys(SYLLABLES);
+  const available  = allKeys.filter(k => !usedSet.has(k));
+  shuffle(available);
+  let distractorCount;
+  if (currentWord.syllables.length <= 2)      distractorCount = 4;
+  else if (currentWord.syllables.length === 3) distractorCount = 5;
+  else                                          distractorCount = 6;
+  const distractors = available.slice(0, distractorCount);
+  const palette     = shuffle(needed.concat(distractors));
+
+  const palEl = $("#palette-a");
+  palEl.innerHTML = "";
+  palette.forEach((id, i) => palEl.appendChild(makeCard(id, i)));
+
+  $("#feedback-a").textContent = "";
+  $("#feedback-a").className   = "feedback";
+  selectedCardEl = null;
+
+  speak(currentWord.text);
+}
+
+$("#listen-a").addEventListener("click", () => speak(currentWord.text));
+
+function makeCard(syllableId, paletteIdx) {
+  const s = SYLLABLES[syllableId];
+  const c = document.createElement("div");
+  c.className   = "card";
+  c.dataset.id  = syllableId;
+  c.dataset.idx = String(paletteIdx);
+  c.innerHTML = `<span class="emoji">${s.emoji}</span><span class="text">${s.text}</span>`;
+  c.addEventListener("pointerdown", onPointerDown);
+  return c;
+}
+
+// ---- Drag & Drop (pointer events: mouse + touch + pen) ----
+let drag = null;
+const DRAG_THRESHOLD = 6;
+
+function onPointerDown(e) {
+  if (currentMode !== "A") return;
+  if (e.button !== undefined && e.button !== 0) return;
+  const card = e.currentTarget;
+  e.preventDefault();
+  const rect = card.getBoundingClientRect();
+  drag = {
+    card,
+    origin: card.parentElement,
+    pointerId: e.pointerId,
+    startX: e.clientX,
+    startY: e.clientY,
+    rectX: rect.left,
+    rectY: rect.top,
+    width: rect.width,
+    height: rect.height,
+    moved: false,
+    lastDropTarget: null
+  };
+  try { card.setPointerCapture(e.pointerId); } catch (err) {}
+  card.addEventListener("pointermove",   onPointerMove);
+  card.addEventListener("pointerup",     onPointerUp);
+  card.addEventListener("pointercancel", onPointerUp);
+}
+
+function onPointerMove(e) {
+  if (!drag) return;
+  const dx = e.clientX - drag.startX;
+  const dy = e.clientY - drag.startY;
+  if (!drag.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+    drag.moved = true;
+    document.body.appendChild(drag.card);
+    const c = drag.card;
+    c.style.position = "fixed";
+    c.style.left   = drag.rectX + "px";
+    c.style.top    = drag.rectY + "px";
+    c.style.width  = drag.width + "px";
+    c.style.height = drag.height + "px";
+    c.style.margin = "0";
+    c.style.pointerEvents = "none";
+    c.classList.add("dragging");
+    c.classList.remove("selected");
+    if (drag.origin && drag.origin.classList && drag.origin.classList.contains("slot")) {
+      drag.origin.classList.remove("filled", "correct", "wrong");
+    }
+    if (selectedCardEl === c) selectedCardEl = null;
+  }
+  if (drag.moved) {
+    drag.card.style.left = (drag.rectX + dx) + "px";
+    drag.card.style.top  = (drag.rectY + dy) + "px";
+    // Highlight slot under pointer
+    const els = document.elementsFromPoint(e.clientX, e.clientY);
+    const slot = els.find(el => el.classList && el.classList.contains("slot"));
+    if (drag.lastDropTarget && drag.lastDropTarget !== slot) {
+      drag.lastDropTarget.classList.remove("drop-target");
+    }
+    if (slot && !slot.classList.contains("filled")) {
+      slot.classList.add("drop-target");
+      drag.lastDropTarget = slot;
+    } else {
+      drag.lastDropTarget = null;
+    }
+  }
+}
+
+function onPointerUp(e) {
+  if (!drag) return;
+  const card = drag.card;
+  card.removeEventListener("pointermove",   onPointerMove);
+  card.removeEventListener("pointerup",     onPointerUp);
+  card.removeEventListener("pointercancel", onPointerUp);
+
+  if (!drag.moved) {
+    const d = drag; drag = null;
+    handleTap(card);
+    return;
+  }
+
+  // Compute drop target while card still has pointer-events: none
+  const els = document.elementsFromPoint(e.clientX, e.clientY);
+  const slot = els.find(el => el.classList && el.classList.contains("slot"));
+
+  // Reset card style
+  card.classList.remove("dragging");
+  card.style.position = "";
+  card.style.left = "";
+  card.style.top = "";
+  card.style.width = "";
+  card.style.height = "";
+  card.style.margin = "";
+  card.style.pointerEvents = "";
+  if (drag.lastDropTarget) drag.lastDropTarget.classList.remove("drop-target");
+
+  let dest;
+  if (slot) {
+    if (slot.classList.contains("filled")) {
+      const existing = slot.querySelector(".card");
+      if (existing && existing !== card) {
+        $("#palette-a").appendChild(existing);
+      }
+    }
+    dest = slot;
+    slot.classList.add("filled");
+    slot.classList.remove("correct", "wrong");
+  } else {
+    dest = $("#palette-a");
+  }
+  dest.appendChild(card);
+
+  drag = null;
+}
+
+function handleTap(card) {
+  if (card.parentElement && card.parentElement.classList.contains("slot")) {
+    const slot = card.parentElement;
+    $("#palette-a").appendChild(card);
+    slot.classList.remove("filled", "correct", "wrong");
+    return;
+  }
+  if (selectedCardEl === card) {
+    card.classList.remove("selected");
+    selectedCardEl = null;
+  } else {
+    if (selectedCardEl) selectedCardEl.classList.remove("selected");
+    card.classList.add("selected");
+    selectedCardEl = card;
+  }
+}
+
+// Tap-to-place (fallback) — clicking an empty slot with a card selected
+$("#slots-a").addEventListener("click", (e) => {
+  const slot = e.target.closest(".slot");
+  if (!slot) return;
+  if (slot.classList.contains("filled")) return;
+  if (!selectedCardEl) return;
+  slot.appendChild(selectedCardEl);
+  slot.classList.add("filled");
+  slot.classList.remove("correct", "wrong");
+  selectedCardEl.classList.remove("selected");
+  selectedCardEl = null;
+});
+
+$("#check-btn").addEventListener("click", () => {
+  const slots = $$("#slots-a .slot");
+  let allFilled  = true;
+  let allCorrect = true;
+  slots.forEach((slot, i) => {
+    const card = slot.querySelector(".card");
+    if (!card) { allFilled = false; return; }
+    if (card.dataset.id === currentWord.syllables[i]) {
+      slot.classList.add("correct");
+      slot.classList.remove("wrong");
+    } else {
+      slot.classList.add("wrong");
+      slot.classList.remove("correct");
+      allCorrect = false;
+    }
+  });
+  const fb = $("#feedback-a");
+  if (!allFilled) {
+    fb.textContent = "Συμπλήρωσε όλες τις θέσεις";
+    fb.className   = "feedback";
+  } else if (allCorrect) {
+    fb.textContent = "Μπράβο! 🎉  " + currentWord.text;
+    fb.className   = "feedback success";
+    speak(currentWord.text);
+  } else {
+    fb.textContent = "Δοκίμασε ξανά!";
+    fb.className   = "feedback error";
+  }
+});
+
+// =========================================================
+// MODE B: Read
+// =========================================================
+function renderModeB() {
+  $("#screen-home").hidden    = true;
+  $("#screen-mode-a").hidden  = true;
+  $("#screen-mode-b").hidden  = false;
+
+  const row = $("#read-row");
+  row.innerHTML = "";
+  currentWord.syllables.forEach(id => {
+    const s = SYLLABLES[id];
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `<span class="emoji">${s.emoji}</span><span class="text">${s.text}</span>`;
+    row.appendChild(c);
+  });
+}
+
+$("#listen-b").addEventListener("click", () => speak(currentWord.text));
+</script>
+</body>
+</html>
