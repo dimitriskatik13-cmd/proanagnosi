@@ -854,19 +854,22 @@ function makeCard(syllableId, paletteIdx) {
   c.className   = "card";
   c.dataset.id  = syllableId;
   c.dataset.idx = String(paletteIdx);
+  c.setAttribute("draggable", "false");
   c.innerHTML = `<span class="emoji">${s.emoji}</span><span class="text">${s.text}</span>`;
   c.addEventListener("pointerdown", onPointerDown);
+  c.addEventListener("dragstart", e => e.preventDefault());
   return c;
 }
 
 // ---- Drag & Drop (pointer events: mouse + touch + pen) ----
 let drag = null;
-const DRAG_THRESHOLD = 6;
+const DRAG_THRESHOLD = 5;
 
 function onPointerDown(e) {
   if (currentMode !== "A") return;
   if (e.button !== undefined && e.button !== 0) return;
   const card = e.currentTarget;
+  if (drag) return; // ignore secondary pointers
   e.preventDefault();
   const rect = card.getBoundingClientRect();
   drag = {
@@ -875,8 +878,8 @@ function onPointerDown(e) {
     pointerId: e.pointerId,
     startX: e.clientX,
     startY: e.clientY,
-    rectX: rect.left,
-    rectY: rect.top,
+    grabDX: e.clientX - rect.left,   // pointer offset inside card
+    grabDY: e.clientY - rect.top,
     width: rect.width,
     height: rect.height,
     moved: false,
@@ -894,25 +897,25 @@ function onPointerMove(e) {
   const dy = e.clientY - drag.startY;
   if (!drag.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
     drag.moved = true;
-    document.body.appendChild(drag.card);
     const c = drag.card;
-    c.style.position = "fixed";
-    c.style.left   = drag.rectX + "px";
-    c.style.top    = drag.rectY + "px";
-    c.style.width  = drag.width + "px";
+    // Don't reparent — pop out via position:fixed in place
+    c.style.width  = drag.width  + "px";
     c.style.height = drag.height + "px";
     c.style.margin = "0";
+    c.style.position = "fixed";
+    c.style.left = (e.clientX - drag.grabDX) + "px";
+    c.style.top  = (e.clientY - drag.grabDY) + "px";
     c.style.pointerEvents = "none";
     c.classList.add("dragging");
     c.classList.remove("selected");
+    if (selectedCardEl === c) selectedCardEl = null;
     if (drag.origin && drag.origin.classList && drag.origin.classList.contains("slot")) {
       drag.origin.classList.remove("filled", "correct", "wrong");
     }
-    if (selectedCardEl === c) selectedCardEl = null;
   }
   if (drag.moved) {
-    drag.card.style.left = (drag.rectX + dx) + "px";
-    drag.card.style.top  = (drag.rectY + dy) + "px";
+    drag.card.style.left = (e.clientX - drag.grabDX) + "px";
+    drag.card.style.top  = (e.clientY - drag.grabDY) + "px";
     // Highlight slot under pointer
     const els = document.elementsFromPoint(e.clientX, e.clientY);
     const slot = els.find(el => el.classList && el.classList.contains("slot"));
@@ -934,18 +937,17 @@ function onPointerUp(e) {
   card.removeEventListener("pointermove",   onPointerMove);
   card.removeEventListener("pointerup",     onPointerUp);
   card.removeEventListener("pointercancel", onPointerUp);
+  try { card.releasePointerCapture(drag.pointerId); } catch (err) {}
 
   if (!drag.moved) {
-    const d = drag; drag = null;
+    drag = null;
     handleTap(card);
     return;
   }
 
-  // Compute drop target while card still has pointer-events: none
   const els = document.elementsFromPoint(e.clientX, e.clientY);
   const slot = els.find(el => el.classList && el.classList.contains("slot"));
 
-  // Reset card style
   card.classList.remove("dragging");
   card.style.position = "";
   card.style.left = "";
@@ -970,7 +972,7 @@ function onPointerUp(e) {
   } else {
     dest = $("#palette-a");
   }
-  dest.appendChild(card);
+  if (card.parentElement !== dest) dest.appendChild(card);
 
   drag = null;
 }
