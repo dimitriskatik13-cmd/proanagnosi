@@ -419,22 +419,17 @@ h2 {
   </div>
 
   <h1>Προανάγνωση<span class="accent"></span></h1>
-  <p class="subhead">Φτιάξε λέξεις από συλλαβές, διάβασε βήμα-βήμα</p>
-
-  <div class="section-label">Πόσες συλλαβές</div>
-  <div class="choice-row" id="length-choices">
-    <button class="choice-btn" data-len="2">2</button>
-    <button class="choice-btn" data-len="3">3</button>
-    <button class="choice-btn" data-len="4">4</button>
-    <button class="choice-btn" data-len="5">5</button>
-    <button class="choice-btn" data-len="6">6</button>
-  </div>
+  <p class="subhead">Φτιάξε λέξεις με συλλαβές ή φωνήματα, διάβασε βήμα-βήμα</p>
 
   <div class="section-label">Διάλεξε τρόπο</div>
   <div class="choice-row" id="mode-choices">
     <button class="choice-btn" data-mode="A">🧩 Φτιάξε τη λέξη</button>
     <button class="choice-btn" data-mode="B">📖 Διάβασε τη λέξη</button>
+    <button class="choice-btn" data-mode="C">🔤 Φτιάξε με φωνήματα</button>
   </div>
+
+  <div class="section-label" id="length-label">Πόσες συλλαβές</div>
+  <div class="choice-row" id="length-choices"></div>
 
   <button class="start-btn" id="start-btn" disabled>Ξεκίνα</button>
 </div>
@@ -700,6 +695,157 @@ const WORDS = {
 };
 
 // =========================================================
+// PHONEMES  (single sound + image-word, for Mode C)
+// =========================================================
+const PHONEMES = {
+  "α":  { text: "α",  word: "άλογο",      emoji: "🐴" },
+  "ε":  { text: "ε",  word: "ελέφαντας",  emoji: "🐘" },
+  "ι":  { text: "ι",  word: "ήλιος",      emoji: "☀️" },
+  "ο":  { text: "ο",  word: "ομπρέλα",    emoji: "☂️" },
+  "ου": { text: "ου", word: "ουρανός",    emoji: "☁️" },
+  "β":  { text: "β",  word: "βιβλίο",     emoji: "📖" },
+  "γ":  { text: "γ",  word: "γάτα",       emoji: "🐱" },
+  "δ":  { text: "δ",  word: "δώρο",       emoji: "🎁" },
+  "ζ":  { text: "ζ",  word: "ζέβρα",      emoji: "🦓" },
+  "θ":  { text: "θ",  word: "θάλασσα",    emoji: "🌊" },
+  "κ":  { text: "κ",  word: "κότα",       emoji: "🐔" },
+  "λ":  { text: "λ",  word: "λεμόνι",     emoji: "🍋" },
+  "μ":  { text: "μ",  word: "μέλισσα",    emoji: "🐝" },
+  "ν":  { text: "ν",  word: "νερό",       emoji: "💧" },
+  "ξ":  { text: "ξ",  word: "ξύλο",       emoji: "🪵" },
+  "π":  { text: "π",  word: "πεταλούδα",  emoji: "🦋" },
+  "ρ":  { text: "ρ",  word: "ρόδα",       emoji: "☸️" },
+  "σ":  { text: "σ",  word: "σαλιγκάρι",  emoji: "🐌" },
+  "τ":  { text: "τ",  word: "ταξί",       emoji: "🚕" },
+  "φ":  { text: "φ",  word: "φάλαινα",    emoji: "🐳" },
+  "χ":  { text: "χ",  word: "χορός",      emoji: "💃" },
+  "ψ":  { text: "ψ",  word: "ψάρι",       emoji: "🐟" }
+};
+
+// =========================================================
+// PHONEME WORD BANK  (4–10 phonemes)
+// Phonetic mapping baked in: η/υ/ει/οι→ι, ω→ο, αι→ε.
+// Double consonants collapse to one phoneme (σσ→σ, λλ→λ, γγ→γ ...).
+// =========================================================
+const PHONEME_WORDS = {
+  4: [
+    { text: "γάτα",  phonemes: ["γ","α","τ","α"] },
+    { text: "κότα",  phonemes: ["κ","ο","τ","α"] },
+    { text: "ψάρι",  phonemes: ["ψ","α","ρ","ι"] },
+    { text: "μέλι",  phonemes: ["μ","ε","λ","ι"] },
+    { text: "λάδι",  phonemes: ["λ","α","δ","ι"] },
+    { text: "μήλο",  phonemes: ["μ","ι","λ","ο"] },
+    { text: "πόδι",  phonemes: ["π","ο","δ","ι"] },
+    { text: "σόδα",  phonemes: ["σ","ο","δ","α"] },
+    { text: "μέρα",  phonemes: ["μ","ε","ρ","α"] },
+    { text: "φέτα",  phonemes: ["φ","ε","τ","α"] },
+    { text: "ζάρι",  phonemes: ["ζ","α","ρ","ι"] },
+    { text: "βάζο",  phonemes: ["β","α","ζ","ο"] },
+    { text: "μάνα",  phonemes: ["μ","α","ν","α"] },
+    { text: "πίτα",  phonemes: ["π","ι","τ","α"] },
+    { text: "λάμα",  phonemes: ["λ","α","μ","α"] },
+    { text: "δώρο",  phonemes: ["δ","ο","ρ","ο"] },
+    { text: "χέρι",  phonemes: ["χ","ε","ρ","ι"] },
+    { text: "γόμα",  phonemes: ["γ","ο","μ","α"] },
+    { text: "νότα",  phonemes: ["ν","ο","τ","α"] },
+    { text: "βίδα",  phonemes: ["β","ι","δ","α"] }
+  ],
+  5: [
+    { text: "δάσος", phonemes: ["δ","α","σ","ο","σ"] },
+    { text: "κήπος", phonemes: ["κ","ι","π","ο","σ"] },
+    { text: "φίλος", phonemes: ["φ","ι","λ","ο","σ"] },
+    { text: "λάθος", phonemes: ["λ","α","θ","ο","σ"] },
+    { text: "μάγος", phonemes: ["μ","α","γ","ο","σ"] },
+    { text: "μήνας", phonemes: ["μ","ι","ν","α","σ"] },
+    { text: "νάνος", phonemes: ["ν","α","ν","ο","σ"] },
+    { text: "νότες", phonemes: ["ν","ο","τ","ε","σ"] },
+    { text: "ψόφος", phonemes: ["ψ","ο","φ","ο","σ"] },
+    { text: "φάρος", phonemes: ["φ","α","ρ","ο","σ"] },
+    { text: "πόνος", phonemes: ["π","ο","ν","ο","σ"] },
+    { text: "λόγος", phonemes: ["λ","ο","γ","ο","σ"] }
+  ],
+  6: [
+    { text: "πατάτα",    phonemes: ["π","α","τ","α","τ","α"] },
+    { text: "σαλάτα",    phonemes: ["σ","α","λ","α","τ","α"] },
+    { text: "λεμόνι",    phonemes: ["λ","ε","μ","ο","ν","ι"] },
+    { text: "φασόλι",    phonemes: ["φ","α","σ","ο","λ","ι"] },
+    { text: "καμήλα",    phonemes: ["κ","α","μ","ι","λ","α"] },
+    { text: "ψαλίδι",    phonemes: ["ψ","α","λ","ι","δ","ι"] },
+    { text: "χελώνα",    phonemes: ["χ","ε","λ","ο","ν","α"] },
+    { text: "καλάμι",    phonemes: ["κ","α","λ","α","μ","ι"] },
+    { text: "ποτάμι",    phonemes: ["π","ο","τ","α","μ","ι"] },
+    { text: "καρότο",    phonemes: ["κ","α","ρ","ο","τ","ο"] },
+    { text: "λάχανο",    phonemes: ["λ","α","χ","α","ν","ο"] },
+    { text: "βελόνα",    phonemes: ["β","ε","λ","ο","ν","α"] },
+    { text: "καπέλο",    phonemes: ["κ","α","π","ε","λ","ο"] },
+    { text: "μηχανή",    phonemes: ["μ","ι","χ","α","ν","ι"] },
+    { text: "καλάθι",    phonemes: ["κ","α","λ","α","θ","ι"] },
+    { text: "λουλούδι",  phonemes: ["λ","ου","λ","ου","δ","ι"] },
+    { text: "κουτάλι",   phonemes: ["κ","ου","τ","α","λ","ι"] },
+    { text: "γουρούνι",  phonemes: ["γ","ου","ρ","ου","ν","ι"] },
+    { text: "μουσική",   phonemes: ["μ","ου","σ","ι","κ","ι"] },
+    { text: "ποτήρι",    phonemes: ["π","ο","τ","ι","ρ","ι"] }
+  ],
+  7: [
+    { text: "λεμόνια",   phonemes: ["λ","ε","μ","ο","ν","ι","α"] },
+    { text: "πατάτες",   phonemes: ["π","α","τ","α","τ","ε","σ"] },
+    { text: "κρεβάτι",   phonemes: ["κ","ρ","ε","β","α","τ","ι"] },
+    { text: "δάχτυλο",   phonemes: ["δ","α","χ","τ","ι","λ","ο"] },
+    { text: "κάστανο",   phonemes: ["κ","α","σ","τ","α","ν","ο"] },
+    { text: "καρέκλα",   phonemes: ["κ","α","ρ","ε","κ","λ","α"] },
+    { text: "χρώματα",   phonemes: ["χ","ρ","ο","μ","α","τ","α"] },
+    { text: "ψαλίδια",   phonemes: ["ψ","α","λ","ι","δ","ι","α"] },
+    { text: "φασόλια",   phonemes: ["φ","α","σ","ο","λ","ι","α"] },
+    { text: "χελώνες",   phonemes: ["χ","ε","λ","ο","ν","ε","σ"] },
+    { text: "ποτήρια",   phonemes: ["π","ο","τ","ι","ρ","ι","α"] },
+    { text: "βελόνες",   phonemes: ["β","ε","λ","ο","ν","ε","σ"] }
+  ],
+  8: [
+    { text: "πατατάκι",   phonemes: ["π","α","τ","α","τ","α","κ","ι"] },
+    { text: "καραμέλα",   phonemes: ["κ","α","ρ","α","μ","ε","λ","α"] },
+    { text: "λεμονάδα",   phonemes: ["λ","ε","μ","ο","ν","α","δ","α"] },
+    { text: "καλημέρα",   phonemes: ["κ","α","λ","ι","μ","ε","ρ","α"] },
+    { text: "φασολάκι",   phonemes: ["φ","α","σ","ο","λ","α","κ","ι"] },
+    { text: "πεταλούδα",  phonemes: ["π","ε","τ","α","λ","ου","δ","α"] },
+    { text: "ψαλιδάκι",   phonemes: ["ψ","α","λ","ι","δ","α","κ","ι"] },
+    { text: "καραβάκι",   phonemes: ["κ","α","ρ","α","β","α","κ","ι"] },
+    { text: "ποδαράκι",   phonemes: ["π","ο","δ","α","ρ","α","κ","ι"] },
+    { text: "λαχανικά",   phonemes: ["λ","α","χ","α","ν","ι","κ","α"] },
+    { text: "ζαχαρωτό",   phonemes: ["ζ","α","χ","α","ρ","ο","τ","ο"] },
+    { text: "σοκολάτα",   phonemes: ["σ","ο","κ","ο","λ","α","τ","α"] },
+    { text: "λαχανικό",   phonemes: ["λ","α","χ","α","ν","ι","κ","ο"] },
+    { text: "γαλατάκι",   phonemes: ["γ","α","λ","α","τ","α","κ","ι"] },
+    { text: "φαναράκι",   phonemes: ["φ","α","ν","α","ρ","α","κ","ι"] },
+    { text: "καλαμάρι",   phonemes: ["κ","α","λ","α","μ","α","ρ","ι"] },
+    { text: "καλοκαίρι",  phonemes: ["κ","α","λ","ο","κ","ε","ρ","ι"] }
+  ],
+  9: [
+    { text: "πορτοκάλι",   phonemes: ["π","ο","ρ","τ","ο","κ","α","λ","ι"] },
+    { text: "τηλεόραση",   phonemes: ["τ","ι","λ","ε","ο","ρ","α","σ","ι"] },
+    { text: "φασολάκια",   phonemes: ["φ","α","σ","ο","λ","α","κ","ι","α"] },
+    { text: "πεταλούδες",  phonemes: ["π","ε","τ","α","λ","ου","δ","ε","σ"] },
+    { text: "καραμέλες",   phonemes: ["κ","α","ρ","α","μ","ε","λ","ε","σ"] },
+    { text: "σοκολάτες",   phonemes: ["σ","ο","κ","ο","λ","α","τ","ε","σ"] },
+    { text: "λαχανικός",   phonemes: ["λ","α","χ","α","ν","ι","κ","ο","σ"] },
+    { text: "χορταρικό",   phonemes: ["χ","ο","ρ","τ","α","ρ","ι","κ","ο"] },
+    { text: "καραβάκια",   phonemes: ["κ","α","ρ","α","β","α","κ","ι","α"] },
+    { text: "ψαλιδάκια",   phonemes: ["ψ","α","λ","ι","δ","α","κ","ι","α"] },
+    { text: "λεμονάδες",   phonemes: ["λ","ε","μ","ο","ν","α","δ","ε","σ"] },
+    { text: "καλημέρες",   phonemes: ["κ","α","λ","ι","μ","ε","ρ","ε","σ"] }
+  ],
+  10: [
+    { text: "ψαροκόκαλο",   phonemes: ["ψ","α","ρ","ο","κ","ο","κ","α","λ","ο"] },
+    { text: "καλαμαράκι",   phonemes: ["κ","α","λ","α","μ","α","ρ","α","κ","ι"] },
+    { text: "καραμελάκι",   phonemes: ["κ","α","ρ","α","μ","ε","λ","α","κ","ι"] },
+    { text: "καλοκαιρινό",  phonemes: ["κ","α","λ","ο","κ","ε","ρ","ι","ν","ο"] },
+    { text: "τηλεφωνάκι",   phonemes: ["τ","ι","λ","ε","φ","ο","ν","α","κ","ι"] },
+    { text: "ψαροκαλάθι",   phonemes: ["ψ","α","ρ","ο","κ","α","λ","α","θ","ι"] },
+    { text: "σοκολατάκι",   phonemes: ["σ","ο","κ","ο","λ","α","τ","α","κ","ι"] },
+    { text: "ζαχαρόνερο",   phonemes: ["ζ","α","χ","α","ρ","ο","ν","ε","ρ","ο"] }
+  ]
+};
+
+// =========================================================
 // APP STATE
 // =========================================================
 const $  = sel => document.querySelector(sel);
@@ -743,20 +889,44 @@ function shuffle(arr) {
 // =========================================================
 // HOME SCREEN
 // =========================================================
-$$("#length-choices .choice-btn").forEach(b => {
-  b.addEventListener("click", () => {
-    $$("#length-choices .choice-btn").forEach(x => x.classList.remove("selected"));
-    b.classList.add("selected");
-    selected.length = parseInt(b.dataset.len, 10);
-    updateStartBtn();
+const SYLLABLE_LENGTHS = [2, 3, 4, 5, 6];
+const PHONEME_LENGTHS  = [4, 5, 6, 7, 8, 9, 10];
+
+function setLengthOptions(mode) {
+  const isPhoneme = (mode === "C");
+  const lengths = isPhoneme ? PHONEME_LENGTHS : SYLLABLE_LENGTHS;
+  $("#length-label").textContent = isPhoneme ? "Πόσα φωνήματα" : "Πόσες συλλαβές";
+  const container = $("#length-choices");
+  container.innerHTML = lengths
+    .map(n => `<button class="choice-btn" data-len="${n}">${n}</button>`)
+    .join("");
+  $$("#length-choices .choice-btn").forEach(b => {
+    b.addEventListener("click", () => {
+      $$("#length-choices .choice-btn").forEach(x => x.classList.remove("selected"));
+      b.classList.add("selected");
+      selected.length = parseInt(b.dataset.len, 10);
+      updateStartBtn();
+    });
   });
-});
+  // Reset length selection whenever the option set changes
+  selected.length = null;
+  updateStartBtn();
+}
+
+// Initial render (syllable lengths by default)
+setLengthOptions(null);
 
 $$("#mode-choices .choice-btn").forEach(b => {
   b.addEventListener("click", () => {
     $$("#mode-choices .choice-btn").forEach(x => x.classList.remove("selected"));
     b.classList.add("selected");
-    selected.mode = b.dataset.mode;
+    const newMode = b.dataset.mode;
+    // If the length-option set differs between the previous and the new mode,
+    // rebuild the length picker. Only Mode C uses a different set.
+    const prevWasPhoneme = selected.mode === "C";
+    const nowIsPhoneme   = newMode === "C";
+    selected.mode = newMode;
+    if (prevWasPhoneme !== nowIsPhoneme) setLengthOptions(newMode);
     updateStartBtn();
   });
 });
@@ -771,8 +941,13 @@ $("#start-btn").addEventListener("click", () => {
 });
 
 $$(".back-btn").forEach(b => b.addEventListener("click", goHome));
-$('[data-action="new-a"]').addEventListener("click", () => startRound(currentLength, "A"));
+$('[data-action="new-a"]').addEventListener("click", () => startRound(currentLength, currentMode === "C" ? "C" : "A"));
 $('[data-action="new-b"]').addEventListener("click", () => startRound(currentLength, "B"));
+
+// Helpers for mode-aware lookups
+function getCurrentDict()    { return currentMode === "C" ? PHONEMES : SYLLABLES; }
+function getCurrentBank()    { return currentMode === "C" ? PHONEME_WORDS : WORDS; }
+function getTargetParts(w)   { return (w || currentWord).phonemes || (w || currentWord).syllables; }
 
 function goHome() {
   if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
@@ -787,24 +962,27 @@ function goHome() {
 function startRound(len, mode) {
   currentLength = len;
   currentMode   = mode;
-  const candidates = WORDS[len];
+  const bank = (mode === "C") ? PHONEME_WORDS : WORDS;
+  const candidates = bank[len];
   if (!candidates || candidates.length === 0) {
     alert("Δεν υπάρχουν ακόμη λέξεις για αυτό το μήκος.");
     return;
   }
+  const key = mode + "_" + len;
   let idx;
   if (candidates.length === 1) {
     idx = 0;
   } else {
     do {
       idx = Math.floor(Math.random() * candidates.length);
-    } while (idx === lastWordIdx[len]);
+    } while (idx === lastWordIdx[key]);
   }
-  lastWordIdx[len] = idx;
+  lastWordIdx[key] = idx;
   currentWord = candidates[idx];
 
-  if (mode === "A") renderModeA();
-  else              renderModeB();
+  if (mode === "A")      renderModeA();
+  else if (mode === "C") renderModeC();
+  else                   renderModeB();
 }
 
 // =========================================================
@@ -849,11 +1027,11 @@ function renderModeA() {
 
 $("#listen-a").addEventListener("click", () => speak(currentWord.text));
 
-function makeCard(syllableId, paletteIdx) {
-  const s = SYLLABLES[syllableId];
+function makeCard(id, paletteIdx) {
+  const s = getCurrentDict()[id];
   const c = document.createElement("div");
   c.className   = "card";
-  c.dataset.id  = syllableId;
+  c.dataset.id  = id;
   c.dataset.idx = String(paletteIdx);
   c.setAttribute("draggable", "false");
   c.innerHTML = `<span class="emoji">${s.svg || s.emoji}</span><span class="text">${s.text}</span>`;
@@ -867,7 +1045,7 @@ let drag = null;
 const DRAG_THRESHOLD = 5;
 
 function onPointerDown(e) {
-  if (currentMode !== "A") return;
+  if (currentMode !== "A" && currentMode !== "C") return;
   if (e.button !== undefined && e.button !== 0) return;
   const card = e.currentTarget;
   if (drag) return; // ignore secondary pointers
@@ -1009,13 +1187,14 @@ $("#slots-a").addEventListener("click", (e) => {
 });
 
 $("#check-btn").addEventListener("click", () => {
-  const slots = $$("#slots-a .slot");
+  const slots  = $$("#slots-a .slot");
+  const target = getTargetParts();
   let allFilled  = true;
   let allCorrect = true;
   slots.forEach((slot, i) => {
     const card = slot.querySelector(".card");
     if (!card) { allFilled = false; return; }
-    if (card.dataset.id === currentWord.syllables[i]) {
+    if (card.dataset.id === target[i]) {
       slot.classList.add("correct");
       slot.classList.remove("wrong");
     } else {
@@ -1037,6 +1216,52 @@ $("#check-btn").addEventListener("click", () => {
     fb.className   = "feedback error";
   }
 });
+
+// =========================================================
+// MODE C: Build the word with phonemes
+// Reuses Mode A's screen + drag/drop logic, but with PHONEMES + PHONEME_WORDS.
+// =========================================================
+function renderModeC() {
+  $("#screen-home").hidden    = true;
+  $("#screen-mode-b").hidden  = true;
+  $("#screen-mode-a").hidden  = false;
+
+  const target  = currentWord.phonemes;
+
+  // Slots
+  const slotsEl = $("#slots-a");
+  slotsEl.innerHTML = "";
+  for (let i = 0; i < target.length; i++) {
+    const s = document.createElement("div");
+    s.className   = "slot";
+    s.dataset.idx = String(i);
+    slotsEl.appendChild(s);
+  }
+
+  // Palette = needed phonemes + distractors
+  const needed    = target.slice();
+  const usedSet   = new Set(needed);
+  const allKeys   = Object.keys(PHONEMES);
+  const available = allKeys.filter(k => !usedSet.has(k));
+  shuffle(available);
+  let dc;
+  if (target.length <= 4)      dc = 5;
+  else if (target.length <= 6) dc = 6;
+  else if (target.length <= 8) dc = 7;
+  else                          dc = 8;
+  const distractors = available.slice(0, Math.min(dc, available.length));
+  const palette     = shuffle(needed.concat(distractors));
+
+  const palEl = $("#palette-a");
+  palEl.innerHTML = "";
+  palette.forEach((id, i) => palEl.appendChild(makeCard(id, i)));
+
+  $("#feedback-a").textContent = "";
+  $("#feedback-a").className   = "feedback";
+  selectedCardEl = null;
+
+  speak(currentWord.text);
+}
 
 // =========================================================
 // MODE B: Read
