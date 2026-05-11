@@ -1066,13 +1066,16 @@ function onPointerDown(e) {
     lastDropTarget: null
   };
   try { card.setPointerCapture(e.pointerId); } catch (err) {}
-  card.addEventListener("pointermove",   onPointerMove);
-  card.addEventListener("pointerup",     onPointerUp);
-  card.addEventListener("pointercancel", onPointerUp);
+  // Listen on document so move/up always fire even if the card loses
+  // hit-testing (e.g. pointer-events:none during drag) or pointer capture is lost.
+  document.addEventListener("pointermove",   onPointerMove);
+  document.addEventListener("pointerup",     onPointerUp);
+  document.addEventListener("pointercancel", onPointerUp);
 }
 
 function onPointerMove(e) {
   if (!drag) return;
+  if (e.pointerId !== drag.pointerId) return;
   const dx = e.clientX - drag.startX;
   const dy = e.clientY - drag.startY;
   if (!drag.moved && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
@@ -1113,10 +1116,11 @@ function onPointerMove(e) {
 
 function onPointerUp(e) {
   if (!drag) return;
+  if (e.pointerId !== drag.pointerId) return;
   const card = drag.card;
-  card.removeEventListener("pointermove",   onPointerMove);
-  card.removeEventListener("pointerup",     onPointerUp);
-  card.removeEventListener("pointercancel", onPointerUp);
+  document.removeEventListener("pointermove",   onPointerMove);
+  document.removeEventListener("pointerup",     onPointerUp);
+  document.removeEventListener("pointercancel", onPointerUp);
   try { card.releasePointerCapture(drag.pointerId); } catch (err) {}
 
   if (!drag.moved) {
