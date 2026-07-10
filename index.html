@@ -380,16 +380,6 @@ h2 {
   font-weight: 400;
 }
 
-.read-row.phoneme-read {
-  width: 100%;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
-}
-.read-row.phoneme-read .card { scroll-snap-align: start; }
-
 /* ==== Footer ==== */
 .app-footer {
   text-align: center;
@@ -1310,7 +1300,6 @@ function renderRead() {
 
   const row = $("#read-row");
   row.innerHTML = "";
-  row.classList.toggle("phoneme-read", phonemeMode);
   getTargetParts().forEach(id => {
     const s = dict[id];
     const c = document.createElement("div");
