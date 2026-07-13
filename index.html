@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Προανάγνωση · ΣΥΝΟΙΔΑ</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -654,7 +656,7 @@ const SYLLABLES = {
   "πα": { text: "πα", word: "πάπια",        emoji: "🦆" },
   "πε": { text: "πε", word: "πεταλούδα",    emoji: "🦋" },
   "πι": { text: "πι", word: "πιρούνι",      emoji: "🍴" },
-  "πο": { text: "πο", word: "ποτήρι",       emoji: "🥛" },
+  "πο": { text: "πο", word: "πόδι",         emoji: "🦶" },
   // ν
   "να": { text: "να", word: "ναύτης",       image: "assets/cards/na-sailor.png" },
   "νε": { text: "νε", word: "νερό",         emoji: "💧" },
@@ -668,13 +670,13 @@ const SYLLABLES = {
   // λ
   "λα": { text: "λα", word: "λάμπα",        emoji: "💡" },
   "λε": { text: "λε", word: "λεμόνι",       emoji: "🍋" },
-  "λι": { text: "λι", word: "λίμνη",        emoji: "🏞️" },
+  "λι": { text: "λι", word: "λίμνη", svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="78" cy="18" r="9" fill="#F7941D"/><path d="M2 52 Q26 30 50 52 Z" fill="#8DC63F"/><path d="M42 52 Q68 26 98 52 Z" fill="#6FAF2E"/><ellipse cx="50" cy="68" rx="42" ry="22" fill="#00AEEF"/><ellipse cx="50" cy="68" rx="42" ry="22" fill="none" stroke="#0090C8" stroke-width="2"/><path d="M28 66 Q34 63 40 66" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/><path d="M52 74 Q58 71 64 74" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/><path d="M62 61 Q68 58 74 61" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/></svg>` },
   "λο": { text: "λο", word: "λόφος",        image: "assets/cards/lo-hill.png" },
   // γ
   "γα": { text: "γα", word: "γάτα",         emoji: "🐱" },
   "γε": { text: "γε", word: "γερανός",      emoji: "🏗️" },
   "γι": { text: "γι", word: "γίδα",         emoji: "🐐" },
-  "γο": { text: "γο", word: "γόμα",         emoji: "🩹" },
+  "γο": { text: "γο", word: "γορίλας",      emoji: "🦍" },
   // β
   "βα": { text: "βα", word: "βάτραχος",     emoji: "🐸" },
   "βε": { text: "βε", word: "βέλος",        emoji: "🏹" },
@@ -684,17 +686,17 @@ const SYLLABLES = {
   "τα": { text: "τα", word: "ταξί",         emoji: "🚕" },
   "τε": { text: "τε", word: "τέρας",        emoji: "👹" },
   "τι": { text: "τι", word: "τηλεόραση",    emoji: "📺" },
-  "το": { text: "το", word: "τοστ",         emoji: "🍞" },
+  "το": { text: "το", word: "τοστ",         emoji: "🥪" },
   // μ
   "μα": { text: "μα", word: "μαϊμού",       emoji: "🐵" },
   "με": { text: "με", word: "μέλισσα",      emoji: "🐝" },
-  "μι": { text: "μι", word: "Μίκυ",         emoji: "🐭" },
+  "μι": { text: "μι", word: "μύτη",         emoji: "👃" },
   "μο": { text: "μο", word: "μωρό",         emoji: "👶" },
   // κ
   "κα": { text: "κα", word: "καρέκλα",      emoji: "🪑" },
   "κε": { text: "κε", word: "κεράσι",       emoji: "🍒" },
   "κι": { text: "κι", word: "κιθάρα",       emoji: "🎸" },
-  "κο": { text: "κο", word: "κολοκύθα",     emoji: "🎃" },
+  "κο": { text: "κο", word: "κότα",         emoji: "🐔" },
   // ζ
   "ζα": { text: "ζα", word: "ζάρι",         emoji: "🎲" },
   "ζε": { text: "ζε", word: "ζέβρα",        emoji: "🦓" },
@@ -709,7 +711,7 @@ const SYLLABLES = {
   "θα": { text: "θα", word: "θάλασσα",      emoji: "🌊" },
   "θε": { text: "θε", word: "θερμόμετρο",   image: "assets/cards/the-thermometer.png" },
   "θι": { text: "θι", word: "θήκη",         image: "assets/cards/thi-case.png" },
-  "θο": { text: "θο", word: "θόλος",        emoji: "🏛️" },
+  "θο": { text: "θο", word: "θόλος", svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="58" width="64" height="34" rx="3" fill="#F1EEE6"/><rect x="18" y="58" width="64" height="34" rx="3" fill="none" stroke="#C9C2B2" stroke-width="2"/><path d="M14 58 A36 36 0 0 1 86 58 Z" fill="#00AEEF"/><path d="M14 58 A36 36 0 0 1 86 58" fill="none" stroke="#0090C8" stroke-width="2.5"/><rect x="47" y="14" width="6" height="12" rx="3" fill="#F7941D"/><rect x="43" y="70" width="14" height="22" rx="7" fill="#8B5A2B"/><rect x="26" y="68" width="9" height="11" rx="2" fill="#58595B" opacity="0.55"/><rect x="65" y="68" width="9" height="11" rx="2" fill="#58595B" opacity="0.55"/></svg>` },
   // χ
   "χα": { text: "χα", word: "χάρακας",      emoji: "📏" },
   "χε": { text: "χε", word: "χελώνα",       emoji: "🐢" },
@@ -723,7 +725,7 @@ const SYLLABLES = {
   // ψ
   "ψα": { text: "ψα", word: "ψάρι",         emoji: "🐟" },
   "ψε": { text: "ψε", word: "ψεκαστήρι", svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="28" y="38" width="34" height="50" rx="5" fill="#00AEEF"/><rect x="32" y="44" width="5" height="36" rx="2.5" fill="#FFFFFF" opacity="0.45"/><rect x="33" y="56" width="24" height="14" rx="2" fill="#FFFFFF"/><line x1="36" y1="60" x2="54" y2="60" stroke="#00AEEF" stroke-width="1.6"/><line x1="36" y1="64" x2="48" y2="64" stroke="#00AEEF" stroke-width="1.6"/><rect x="38" y="28" width="14" height="12" rx="1.5" fill="#374151"/><path d="M28 42 L18 50 L28 55 L28 48 Z" fill="#374151"/><rect x="52" y="22" width="22" height="7" rx="3" fill="#374151"/><circle cx="80" cy="22" r="2" fill="#00AEEF" opacity="0.85"/><circle cx="86" cy="20" r="1.5" fill="#00AEEF" opacity="0.85"/><circle cx="86" cy="28" r="1.5" fill="#00AEEF" opacity="0.85"/><circle cx="90" cy="24" r="1" fill="#00AEEF" opacity="0.85"/><circle cx="92" cy="20" r="0.8" fill="#00AEEF" opacity="0.85"/></svg>` },
-  "ψι": { text: "ψι", word: "ψυγείο",       emoji: "🧊" },
+  "ψι": { text: "ψι", word: "ψυγείο", svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="28" y="6" width="44" height="88" rx="7" fill="#00AEEF"/><rect x="30" y="8" width="40" height="84" rx="5" fill="#5BC6F2"/><rect x="30" y="36" width="40" height="3.5" fill="#FFFFFF"/><rect x="61" y="14" width="5" height="16" rx="2.5" fill="#FFFFFF"/><rect x="61" y="46" width="5" height="24" rx="2.5" fill="#FFFFFF"/><rect x="36" y="82" width="10" height="4" rx="2" fill="#00789F"/><rect x="54" y="82" width="10" height="4" rx="2" fill="#00789F"/></svg>` },
   "ψο": { text: "ψο", word: "ψωμί",         emoji: "🥖" },
   // ρ
   "ρα": { text: "ρα", word: "ραδιόφωνο",    emoji: "📻" },
@@ -870,7 +872,7 @@ const PHONEMES = {
   "ε":  { text: "ε",  word: "ελέφαντας",  emoji: "🐘" },
   "ι":  { text: "ι",  word: "ήλιος",      emoji: "☀️" },
   "ο":  { text: "ο",  word: "ομπρέλα",    emoji: "☂️" },
-  "ου": { text: "ου", word: "ουρανός",    emoji: "☁️" },
+  "ου": { text: "ου", word: "ουρανός", svg: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="10" width="88" height="80" rx="12" fill="#5BC6F2"/><circle cx="72" cy="30" r="12" fill="#F7D648"/><g fill="#FFFFFF"><ellipse cx="34" cy="46" rx="15" ry="9"/><ellipse cx="45" cy="42" rx="12" ry="8"/><ellipse cx="24" cy="44" rx="9" ry="6"/><ellipse cx="60" cy="70" rx="16" ry="9"/><ellipse cx="72" cy="66" rx="11" ry="7"/><ellipse cx="49" cy="68" rx="9" ry="6"/></g></svg>` },
   "β":  { text: "β",  word: "βιβλίο",     emoji: "📖" },
   "γ":  { text: "γ",  word: "γάτα",       emoji: "🐱" },
   "δ":  { text: "δ",  word: "δώρο",       emoji: "🎁" },
@@ -1291,6 +1293,7 @@ function getTargetParts(w) { return isPhonemeMode() ? (w || currentWord).phoneme
 
 function goHome() {
   clearAutoNext();
+  cancelDrag();
   if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
   $("#screen-home").hidden    = false;
   $("#screen-mode-a").hidden  = true;
@@ -1302,6 +1305,7 @@ function goHome() {
 // =========================================================
 function startRound(len, mode) {
   clearAutoNext();
+  cancelDrag();
   currentLength = len;
   currentMode   = mode;
   const config = getMode(mode);
@@ -1426,8 +1430,22 @@ function makeCard(id, paletteIdx) {
 let drag = null;
 const DRAG_THRESHOLD = 5;
 
+// Ακυρώνει ενεργό σύρσιμο (π.χ. όταν αλλάζει λέξη/οθόνη στη μέση του drag),
+// αλλιώς η παλιά κάρτα μπορεί να "μπει" στο νέο ταμπλό στο pointerup.
+function cancelDrag() {
+  if (!drag) return;
+  const card = drag.card;
+  document.removeEventListener("pointermove",   onPointerMove);
+  document.removeEventListener("pointerup",     onPointerUp);
+  document.removeEventListener("pointercancel", onPointerUp);
+  try { card.releasePointerCapture(drag.pointerId); } catch (err) {}
+  if (drag.lastDropTarget) drag.lastDropTarget.classList.remove("drop-target");
+  card.remove();
+  drag = null;
+}
+
 function onPointerDown(e) {
-  if (currentMode !== "A" && currentMode !== "C") return;
+  if (getMode().kind !== "build") return;
   if (e.button !== undefined && e.button !== 0) return;
   const card = e.currentTarget;
   if (drag) return; // ignore secondary pointers
