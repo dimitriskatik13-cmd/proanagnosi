@@ -342,10 +342,11 @@ h2 {
   flex-shrink: 0;
   touch-action: none;
 }
-.card .emoji { font-size: 38px; line-height: 1; pointer-events: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+/* Ίδιο πλαίσιο για emoji, SVG και PNG ώστε όλες οι κάρτες να ευθυγραμμίζονται */
+.card .emoji { font-size: 38px; line-height: 1; pointer-events: none; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; }
 .card .emoji svg { width: 100%; height: 100%; display: block; pointer-events: none; }
 .card .emoji svg * { pointer-events: none; }
-.card .card-img { width: 58px; height: 58px; display: block; object-fit: contain; pointer-events: none; }
+.card .card-img { width: 52px; height: 52px; display: block; object-fit: contain; pointer-events: none; }
 .card .text { font-size: 24px; color: var(--grey); margin-top: 6px; font-weight: 700; pointer-events: none; }
 .card:hover { border-color: var(--green); }
 .card:focus-visible, .slot:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
@@ -524,8 +525,8 @@ h2 {
   .start-btn { font-size: 18px; padding: 16px 40px; }
   .listen-btn { font-size: 18px; padding: 12px 26px; }
   .card, .slot { width: 72px; height: 92px; }
-  .card .emoji { font-size: 28px; width: 34px; height: 34px; }
-  .card .card-img { width: 44px; height: 44px; }
+  .card .emoji { font-size: 28px; width: 38px; height: 38px; }
+  .card .card-img { width: 38px; height: 38px; }
   .card .text { font-size: 18px; }
   .slots, .read-row { gap: 5px; padding: 8px; min-height: 100px; }
   .palette { gap: 5px; padding: 8px; }
