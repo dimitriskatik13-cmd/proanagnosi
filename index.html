@@ -396,6 +396,98 @@ h2 {
   font-weight: 400;
 }
 
+/* ==== Settings ==== */
+.home-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2px 0 -34px;
+}
+.icon-btn {
+  font-family: inherit;
+  font-size: 19px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #E5E7EB;
+  background: white;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.18s;
+}
+.icon-btn:hover { border-color: var(--grey); }
+.icon-btn:active { transform: scale(0.94); }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  padding: 20px;
+}
+.modal-backdrop[hidden] { display: none; }
+.modal {
+  background: white;
+  border-radius: 20px;
+  padding: 24px 26px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.modal h3 {
+  margin: 0 0 14px;
+  color: var(--grey);
+  font-size: 20px;
+  font-weight: 600;
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.setting-row strong { color: var(--grey); font-size: 16px; }
+.setting-row small {
+  display: block;
+  color: var(--grey);
+  opacity: 0.65;
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 2px;
+}
+.switch {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 52px;
+  height: 30px;
+  border-radius: 999px;
+  background: #D1D5DB;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.18s;
+  flex-shrink: 0;
+  margin: 0;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  transition: left 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+.switch:checked { background: var(--green); }
+.switch:checked::after { left: 25px; }
+.switch:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.modal .check-btn { margin: 16px auto 0; display: block; }
+
 /* ==== Footer (PDF layout: locations left, contact right) ==== */
 .app-footer {
   display: flex;
@@ -466,12 +558,17 @@ h2 {
   <h1>Προανάγνωση</h1>
   <p class="subhead">Φτιάξε λέξεις με συλλαβές ή φωνήματα, διάβασε βήμα-βήμα</p>
 
+  <div class="home-tools">
+    <button class="icon-btn" id="settings-btn" aria-label="Ρυθμίσεις" title="Ρυθμίσεις">⚙️</button>
+  </div>
+
   <div class="section-label">Διάλεξε τρόπο</div>
   <div class="choice-row" id="mode-choices">
     <button class="choice-btn" data-mode="A">🧩 Φτιάξε τη λέξη</button>
     <button class="choice-btn" data-mode="B">📖 Διάβασε τη λέξη</button>
     <button class="choice-btn" data-mode="C">🔤 Φτιάξε με φωνήματα</button>
     <button class="choice-btn" data-mode="D">🔎 Διάβασε με φωνήματα</button>
+    <button class="choice-btn" data-mode="E" hidden>🌀 Ψευδολέξεις</button>
   </div>
 
   <div class="section-label" id="length-label">Πόσες συλλαβές</div>
@@ -523,6 +620,21 @@ h2 {
   <div class="read-row" id="read-row"></div>
   <div class="hint" id="hint-b"></div>
   <button class="listen-btn" id="listen-b">🔊 Άκουσε</button>
+</div>
+
+<!-- Settings modal -->
+<div class="modal-backdrop" id="settings-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <h3 id="settings-title">⚙️ Ρυθμίσεις</h3>
+    <label class="setting-row">
+      <span>
+        <strong>Ψευδολέξεις</strong>
+        <small>Δραστηριότητα τοποθέτησης φωνημάτων με ψευδολέξεις (8–12 φωνήματα)</small>
+      </span>
+      <input type="checkbox" id="toggle-pseudo" class="switch">
+    </label>
+    <button class="check-btn" id="settings-close">Κλείσιμο</button>
+  </div>
 </div>
 
 <!-- Footer -->
@@ -932,6 +1044,61 @@ const PHONEME_WORDS = {
 };
 
 // =========================================================
+// PSEUDOWORDS  (8–12 phonemes, Mode E — enabled via settings)
+// Γραμμένες φωνητικά (μόνο ι/ε/ο/α/ου) ώστε η εμφάνιση να
+// ταιριάζει 1-προς-1 με τις κάρτες· τονισμένες για σωστό TTS.
+// =========================================================
+const PSEUDO_WORDS = {
+  8: [
+    { text: "ζεκαλόνι",  phonemes: ["ζ","ε","κ","α","λ","ο","ν","ι"] },
+    { text: "μοταφέλι",  phonemes: ["μ","ο","τ","α","φ","ε","λ","ι"] },
+    { text: "σαπολίκο",  phonemes: ["σ","α","π","ο","λ","ι","κ","ο"] },
+    { text: "βαλεμότι",  phonemes: ["β","α","λ","ε","μ","ο","τ","ι"] },
+    { text: "κοθιράνα",  phonemes: ["κ","ο","θ","ι","ρ","α","ν","α"] },
+    { text: "δενομάλο",  phonemes: ["δ","ε","ν","ο","μ","α","λ","ο"] },
+    { text: "ρικαμόλα",  phonemes: ["ρ","ι","κ","α","μ","ο","λ","α"] },
+    { text: "χαλοπίνι",  phonemes: ["χ","α","λ","ο","π","ι","ν","ι"] },
+    { text: "τουλαμίκο", phonemes: ["τ","ου","λ","α","μ","ι","κ","ο"] },
+    { text: "φαγελότι",  phonemes: ["φ","α","γ","ε","λ","ο","τ","ι"] }
+  ],
+  9: [
+    { text: "λαχανικός", phonemes: ["λ","α","χ","α","ν","ι","κ","ο","σ"] },
+    { text: "μοταλέκας", phonemes: ["μ","ο","τ","α","λ","ε","κ","α","σ"] },
+    { text: "κρανελότι", phonemes: ["κ","ρ","α","ν","ε","λ","ο","τ","ι"] },
+    { text: "φλομεκάνι", phonemes: ["φ","λ","ο","μ","ε","κ","α","ν","ι"] },
+    { text: "δρεπανόλι", phonemes: ["δ","ρ","ε","π","α","ν","ο","λ","ι"] },
+    { text: "στοκαλέμι", phonemes: ["σ","τ","ο","κ","α","λ","ε","μ","ι"] },
+    { text: "πλανετόκι", phonemes: ["π","λ","α","ν","ε","τ","ο","κ","ι"] },
+    { text: "βαλεμότος", phonemes: ["β","α","λ","ε","μ","ο","τ","ο","σ"] }
+  ],
+  10: [
+    { text: "χελοπίτανο",  phonemes: ["χ","ε","λ","ο","π","ι","τ","α","ν","ο"] },
+    { text: "γαλετοπίνα",  phonemes: ["γ","α","λ","ε","τ","ο","π","ι","ν","α"] },
+    { text: "θαρομακούλι", phonemes: ["θ","α","ρ","ο","μ","α","κ","ου","λ","ι"] },
+    { text: "σελοκαμίδα",  phonemes: ["σ","ε","λ","ο","κ","α","μ","ι","δ","α"] },
+    { text: "μαφοτελίκο",  phonemes: ["μ","α","φ","ο","τ","ε","λ","ι","κ","ο"] },
+    { text: "φανετοκόλι",  phonemes: ["φ","α","ν","ε","τ","ο","κ","ο","λ","ι"] }
+  ],
+  11: [
+    { text: "ψαροκαλάθι",  phonemes: ["π","σ","α","ρ","ο","κ","α","λ","α","θ","ι"] },
+    { text: "βρατοκανίλα", phonemes: ["β","ρ","α","τ","ο","κ","α","ν","ι","λ","α"] },
+    { text: "κρεμαλοφίτο", phonemes: ["κ","ρ","ε","μ","α","λ","ο","φ","ι","τ","ο"] },
+    { text: "ταπελονίκος", phonemes: ["τ","α","π","ε","λ","ο","ν","ι","κ","ο","σ"] },
+    { text: "δολιμακέτρα", phonemes: ["δ","ο","λ","ι","μ","α","κ","ε","τ","ρ","α"] },
+    { text: "χαλομεπίτος", phonemes: ["χ","α","λ","ο","μ","ε","π","ι","τ","ο","σ"] },
+    { text: "σαμολεκίδρα", phonemes: ["σ","α","μ","ο","λ","ε","κ","ι","δ","ρ","α"] }
+  ],
+  12: [
+    { text: "λαχανοκαλάθι", phonemes: ["λ","α","χ","α","ν","ο","κ","α","λ","α","θ","ι"] },
+    { text: "μελανοκοπίτα", phonemes: ["μ","ε","λ","α","ν","ο","κ","ο","π","ι","τ","α"] },
+    { text: "ταμελοκανίδα", phonemes: ["τ","α","μ","ε","λ","ο","κ","α","ν","ι","δ","α"] },
+    { text: "βελοκαμιτάρο", phonemes: ["β","ε","λ","ο","κ","α","μ","ι","τ","α","ρ","ο"] },
+    { text: "χαμολετοκίνα", phonemes: ["χ","α","μ","ο","λ","ε","τ","ο","κ","ι","ν","α"] },
+    { text: "σαροκαλεμίδο", phonemes: ["σ","α","ρ","ο","κ","α","λ","ε","μ","ι","δ","ο"] }
+  ]
+};
+
+// =========================================================
 // APP STATE
 // =========================================================
 const $  = sel => document.querySelector(sel);
@@ -1013,12 +1180,14 @@ function shuffle(arr) {
 // =========================================================
 const SYLLABLE_LENGTHS = [2, 3, 4, 5, 6];
 const PHONEME_LENGTHS  = [4, 5, 6, 7, 8, 9, 10];
+const PSEUDO_LENGTHS   = [8, 9, 10, 11, 12];
 
 const MODES = {
   A: { kind: "build", unit: "syllable", lengths: SYLLABLE_LENGTHS, bank: WORDS },
   B: { kind: "read",  unit: "syllable", lengths: SYLLABLE_LENGTHS, bank: WORDS },
   C: { kind: "build", unit: "phoneme",  lengths: PHONEME_LENGTHS,  bank: PHONEME_WORDS },
-  D: { kind: "read",  unit: "phoneme",  lengths: PHONEME_LENGTHS,  bank: PHONEME_WORDS }
+  D: { kind: "read",  unit: "phoneme",  lengths: PHONEME_LENGTHS,  bank: PHONEME_WORDS },
+  E: { kind: "build", unit: "phoneme",  lengths: PSEUDO_LENGTHS,   bank: PSEUDO_WORDS, pseudo: true }
 };
 
 function getMode(mode = currentMode) {
@@ -1057,13 +1226,56 @@ $$("#mode-choices .choice-btn").forEach(b => {
     $$("#mode-choices .choice-btn").forEach(x => x.classList.remove("selected"));
     b.classList.add("selected");
     const newMode = b.dataset.mode;
-    const previousUnit = selected.mode ? getMode(selected.mode).unit : "syllable";
-    const nextUnit = getMode(newMode).unit;
+    const prevLengths = selected.mode ? getMode(selected.mode).lengths : SYLLABLE_LENGTHS;
+    const nextLengths = getMode(newMode).lengths;
     selected.mode = newMode;
-    if (previousUnit !== nextUnit) setLengthOptions(newMode);
+    if (prevLengths.join() !== nextLengths.join()) setLengthOptions(newMode);
     updateStartBtn();
   });
 });
+
+// =========================================================
+// SETTINGS  (⚙️ — persisted in localStorage)
+// =========================================================
+const SETTINGS_KEY = "proanagnosi_settings";
+const settings = { pseudowords: false };
+try { Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}); } catch (e) {}
+
+function saveSettings() {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+}
+
+function applySettings() {
+  $('[data-mode="E"]').hidden = !settings.pseudowords;
+  if (!settings.pseudowords && selected.mode === "E") {
+    selected.mode = null;
+    $$("#mode-choices .choice-btn").forEach(x => x.classList.remove("selected"));
+    setLengthOptions(null);
+  }
+  updateStartBtn();
+}
+
+function closeSettings() {
+  $("#settings-modal").hidden = true;
+}
+
+$("#settings-btn").addEventListener("click", () => {
+  $("#toggle-pseudo").checked = settings.pseudowords;
+  $("#settings-modal").hidden = false;
+});
+$("#settings-close").addEventListener("click", closeSettings);
+$("#settings-modal").addEventListener("click", e => {
+  if (e.target === $("#settings-modal")) closeSettings();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && !$("#settings-modal").hidden) closeSettings();
+});
+$("#toggle-pseudo").addEventListener("change", e => {
+  settings.pseudowords = e.target.checked;
+  saveSettings();
+  applySettings();
+});
+applySettings();
 
 function updateStartBtn() {
   $("#start-btn").disabled = !(selected.length && selected.mode);
@@ -1130,9 +1342,11 @@ function renderBuild() {
   const phonemeMode = isPhonemeMode();
   const target = getTargetParts();
   const dict = getCurrentDict();
-  $("#build-heading").textContent = phonemeMode
-    ? "Άκουσε τη λέξη και βάλε τα φωνήματα στη σειρά"
-    : "Άκουσε τη λέξη και βάλε τις συλλαβές στη σειρά";
+  $("#build-heading").textContent = getMode().pseudo
+    ? "Άκουσε την ψευδολέξη και βάλε τα φωνήματα στη σειρά"
+    : phonemeMode
+      ? "Άκουσε τη λέξη και βάλε τα φωνήματα στη σειρά"
+      : "Άκουσε τη λέξη και βάλε τις συλλαβές στη σειρά";
 
   const slotsEl = $("#slots-a");
   slotsEl.innerHTML = "";
