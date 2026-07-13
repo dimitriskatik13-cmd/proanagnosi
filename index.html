@@ -304,6 +304,25 @@ h2 {
   75% { transform: translateX(6px); }
 }
 
+/* ==== Confetti (success celebration) ==== */
+.confetti-piece {
+  position: fixed;
+  top: -16px;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 10000;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  to { transform: translateY(108vh) rotate(720deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece { display: none; }
+  .slot.wrong { animation: none; }
+}
+
 .palette {
   display: flex;
   justify-content: center;
@@ -912,6 +931,31 @@ function speak(text) {
   speechSynthesis.speak(u);
 }
 
+const CONFETTI_COLORS = ["#8DC63F", "#ED1C24", "#00AEEF", "#F7941D", "#58595B"];
+let autoNextTimer = null;
+
+function clearAutoNext() {
+  if (autoNextTimer) {
+    clearTimeout(autoNextTimer);
+    autoNextTimer = null;
+  }
+}
+
+function launchConfetti() {
+  for (let i = 0; i < 44; i++) {
+    const p = document.createElement("div");
+    p.className = "confetti-piece";
+    p.style.left = (Math.random() * 100) + "vw";
+    p.style.background = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+    p.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+    p.style.animationDelay = (Math.random() * 0.4) + "s";
+    document.body.appendChild(p);
+    // animationend δεν έρχεται με prefers-reduced-motion, οπότε και timeout
+    p.addEventListener("animationend", () => p.remove());
+    setTimeout(() => p.remove(), 3600);
+  }
+}
+
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -995,6 +1039,7 @@ function getCurrentDict()  { return isPhonemeMode() ? PHONEMES : SYLLABLES; }
 function getTargetParts(w) { return isPhonemeMode() ? (w || currentWord).phonemes : (w || currentWord).syllables; }
 
 function goHome() {
+  clearAutoNext();
   if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
   $("#screen-home").hidden    = false;
   $("#screen-mode-a").hidden  = true;
@@ -1005,6 +1050,7 @@ function goHome() {
 // ROUND
 // =========================================================
 function startRound(len, mode) {
+  clearAutoNext();
   currentLength = len;
   currentMode   = mode;
   const config = getMode(mode);
@@ -1298,6 +1344,12 @@ $("#check-btn").addEventListener("click", () => {
     fb.textContent = "Μπράβο! 🎉  " + currentWord.text;
     fb.className   = "feedback success";
     speak(currentWord.text);
+    launchConfetti();
+    clearAutoNext();
+    autoNextTimer = setTimeout(() => {
+      autoNextTimer = null;
+      startRound(currentLength, currentMode);
+    }, 3200);
   } else {
     fb.textContent = "Δοκίμασε ξανά!";
     fb.className   = "feedback error";
