@@ -99,91 +99,42 @@ body {
   width: auto;
 }
 
-/* ==== Page title (left-aligned, shared app layout) ==== */
+/* ==== Home title ==== */
 h1 {
-  text-align: left;
-  text-transform: uppercase;
+  text-align: center;
   color: var(--grey);
-  margin: 14px 0 4px;
-  font-size: 44px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  margin: 22px 0 6px;
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 .subhead {
-  text-align: left;
+  text-align: center;
   color: var(--grey);
   opacity: 0.7;
-  font-size: 17px;
-  margin: 0 0 18px;
+  font-size: 16px;
+  margin: 0 0 30px;
   font-weight: 400;
 }
 
-/* ==== Toolbar (row of pill action buttons) ==== */
-.toolbar {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 4px 0 18px;
-}
-.tool-btn {
-  font-family: inherit;
-  font-size: 18px;
-  padding: 14px 24px;
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: pointer;
-  border: 2px solid transparent;
-  flex: 1 1 160px;
-  min-width: 140px;
-  transition: transform 0.1s, background 0.18s, border-color 0.18s;
-}
-.tool-btn:active { transform: scale(0.97); }
-.tool-btn.white {
-  background: white;
+h2 {
+  text-align: center;
   color: var(--grey);
-  border-color: #E5E7EB;
+  margin: 4px 0 14px;
+  font-size: 22px;
+  font-weight: 500;
 }
-.tool-btn.white:hover { border-color: var(--grey); }
-.tool-btn.orange {
-  background: var(--orange);
-  color: white;
-  box-shadow: 0 4px 12px rgba(247,148,29,0.30);
-}
-.tool-btn.blue {
-  background: var(--blue);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,174,239,0.30);
-}
-.tool-btn.green {
-  background: var(--green);
-  color: white;
-  box-shadow: 0 4px 12px rgba(141,198,63,0.30);
-}
-.toolbar .settings-btn { flex: 0 0 auto; }
 
-/* ==== Panels (dark header + white body) ==== */
-.panel {
-  background: white;
-  border: 1px solid #E5E7EB;
-  border-radius: 18px;
-  overflow: hidden;
-  margin: 0 0 16px;
-}
-.panel-header {
-  background: var(--grey);
-  color: white;
-  padding: 13px 18px;
+.section-label {
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: var(--grey);
+  opacity: 0.6;
+  margin: 24px 0 14px;
   font-weight: 600;
-  font-size: 18px;
+  text-transform: uppercase;
 }
-.panel-body { padding: 16px 14px; }
-.panel .palette {
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-.panel .slots, .panel .read-row { margin: 4px auto 10px; }
 
 /* ==== Choice buttons (length, mode) ==== */
 .choice-row {
@@ -238,6 +189,63 @@ h1 {
   box-shadow: none;
 }
 .start-btn:not(:disabled):active { transform: scale(0.97); }
+
+/* ==== Top bar (in-game) ==== */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.back-btn, .new-word-btn, .check-btn {
+  font-family: inherit;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.1s, background 0.18s;
+}
+.back-btn {
+  background: white;
+  color: var(--grey);
+  border-color: #E5E7EB;
+}
+.back-btn:hover { border-color: var(--grey); }
+.new-word-btn {
+  background: var(--orange);
+  color: white;
+  box-shadow: 0 3px 10px rgba(247,148,29,0.30);
+}
+.check-btn {
+  background: var(--green);
+  color: white;
+  font-size: 19px;
+  padding: 14px 30px;
+  box-shadow: 0 4px 14px rgba(141,198,63,0.35);
+}
+.back-btn:active, .new-word-btn:active, .check-btn:active { transform: scale(0.96); }
+
+/* ==== Listen button ==== */
+.listen-btn {
+  font-family: inherit;
+  font-size: 22px;
+  padding: 14px 32px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 14px auto;
+  display: block;
+  box-shadow: 0 5px 14px rgba(0,174,239,0.35);
+  transition: transform 0.1s;
+}
+.listen-btn:active { transform: scale(0.97); }
 
 /* ==== Slots & cards ==== */
 .slots, .read-row {
@@ -371,6 +379,14 @@ h1 {
 .feedback.success { color: var(--green); }
 .feedback.error { color: var(--red); }
 
+.action-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
 .hint {
   text-align: center;
   color: var(--grey);
@@ -381,6 +397,23 @@ h1 {
 }
 
 /* ==== Settings ==== */
+.settings-btn {
+  font-family: inherit;
+  font-size: 18px;
+  padding: 13px 32px;
+  background: white;
+  color: var(--grey);
+  border: 2px solid #E5E7EB;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 18px auto 0;
+  display: block;
+  transition: transform 0.1s, border-color 0.18s;
+}
+.settings-btn:hover { border-color: var(--grey); }
+.settings-btn:active { transform: scale(0.96); }
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -483,14 +516,13 @@ h1 {
   .app-header .brand .name { font-size: 15px; }
   .app-header .brand .label { font-size: 8.5px; }
   .app-footer { margin: 0 14px; justify-content: center; text-align: center; font-size: 11px; }
-  h1 { font-size: 28px; margin: 10px 0 3px; }
-  .subhead { font-size: 14px; margin-bottom: 14px; }
-  .toolbar { gap: 8px; margin-bottom: 12px; }
-  .tool-btn { font-size: 15px; padding: 11px 16px; flex: 1 1 130px; min-width: 120px; }
-  .panel-header { font-size: 15px; padding: 10px 14px; }
-  .panel-body { padding: 10px 8px; }
+  h1 { font-size: 30px; margin: 14px 0 4px; }
+  h2 { font-size: 17px; }
+  .subhead { font-size: 14px; margin-bottom: 18px; }
+  .section-label { font-size: 12px; margin: 18px 0 10px; }
   .choice-btn { font-size: 17px; padding: 12px 18px; min-width: 60px; }
   .start-btn { font-size: 18px; padding: 16px 40px; }
+  .listen-btn { font-size: 18px; padding: 12px 26px; }
   .card, .slot { width: 72px; height: 92px; }
   .card .emoji { font-size: 28px; width: 34px; height: 34px; }
   .card .card-img { width: 44px; height: 44px; }
@@ -523,31 +555,20 @@ h1 {
   <h1>Προανάγνωση</h1>
   <p class="subhead">Φτιάξε λέξεις με συλλαβές ή φωνήματα, διάβασε βήμα-βήμα</p>
 
-  <div class="toolbar">
-    <button class="settings-btn tool-btn white" id="settings-btn">⚙️ Ρυθμίσεις</button>
+  <div class="section-label">Διάλεξε τρόπο</div>
+  <div class="choice-row" id="mode-choices">
+    <button class="choice-btn" data-mode="A">🧩 Φτιάξε τη λέξη</button>
+    <button class="choice-btn" data-mode="B">📖 Διάβασε τη λέξη</button>
+    <button class="choice-btn" data-mode="C">🔤 Φτιάξε με φωνήματα</button>
+    <button class="choice-btn" data-mode="D">🔎 Διάβασε με φωνήματα</button>
+    <button class="choice-btn" data-mode="E" hidden>🌀 Ψευδολέξεις</button>
   </div>
 
-  <div class="panel">
-    <div class="panel-header">🧩 Διάλεξε τρόπο</div>
-    <div class="panel-body">
-      <div class="choice-row" id="mode-choices">
-        <button class="choice-btn" data-mode="A">🧩 Φτιάξε τη λέξη</button>
-        <button class="choice-btn" data-mode="B">📖 Διάβασε τη λέξη</button>
-        <button class="choice-btn" data-mode="C">🔤 Φτιάξε με φωνήματα</button>
-        <button class="choice-btn" data-mode="D">🔎 Διάβασε με φωνήματα</button>
-        <button class="choice-btn" data-mode="E" hidden>🌀 Ψευδολέξεις</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-header" id="length-label">🔢 Πόσες συλλαβές</div>
-    <div class="panel-body">
-      <div class="choice-row" id="length-choices"></div>
-    </div>
-  </div>
+  <div class="section-label" id="length-label">Πόσες συλλαβές</div>
+  <div class="choice-row" id="length-choices"></div>
 
   <button class="start-btn" id="start-btn" disabled>Ξεκίνα</button>
+  <button class="settings-btn" id="settings-btn">⚙️ Ρυθμίσεις</button>
 </div>
 
 <!-- MODE A: Build -->
@@ -560,32 +581,19 @@ h1 {
       <span class="label">Προανάγνωση</span>
     </div>
   </div>
-
-  <h1>Προανάγνωση</h1>
-  <p class="subhead" id="sub-a"></p>
-
-  <div class="toolbar">
-    <button class="back-btn tool-btn white" data-action="home">← Πίσω</button>
-    <button class="new-word-btn tool-btn orange" data-action="new-a">🔄 Νέα λέξη</button>
-    <button class="listen-btn tool-btn blue" id="listen-a">🔊 Άκουσε</button>
-    <button class="check-btn tool-btn green" id="check-btn">✓ Έλεγχος</button>
+  <div class="top-bar">
+    <button class="back-btn" data-action="home">← Πίσω</button>
+    <button class="new-word-btn" data-action="new-a">🔄 Νέα λέξη</button>
   </div>
-
-  <div class="panel">
-    <div class="panel-header" id="build-heading">✏️ Άκουσε τη λέξη και βάλε τις συλλαβές στη σειρά</div>
-    <div class="panel-body">
-      <div class="slots" id="slots-a"></div>
-      <div class="hint" id="hint-a">Πάτησε ένα κομματάκι, μετά πάτησε σε μια θέση</div>
-      <div class="feedback" id="feedback-a" aria-live="polite"></div>
-    </div>
+  <h2 id="build-heading">Άκουσε τη λέξη και βάλε τις συλλαβές στη σειρά</h2>
+  <button class="listen-btn" id="listen-a">🔊 Άκουσε</button>
+  <div class="slots" id="slots-a"></div>
+  <div class="hint" id="hint-a">Πάτησε ένα κομματάκι, μετά πάτησε σε μια θέση</div>
+  <div class="feedback" id="feedback-a" aria-live="polite"></div>
+  <div class="action-row">
+    <button class="check-btn" id="check-btn">✓ Έλεγχος</button>
   </div>
-
-  <div class="panel">
-    <div class="panel-header">🗂️ Κάρτες</div>
-    <div class="panel-body">
-      <div class="palette" id="palette-a"></div>
-    </div>
-  </div>
+  <div class="palette" id="palette-a"></div>
 </div>
 
 <!-- MODE B: Read -->
@@ -598,23 +606,14 @@ h1 {
       <span class="label">Προανάγνωση</span>
     </div>
   </div>
-
-  <h1>Προανάγνωση</h1>
-  <p class="subhead" id="sub-b"></p>
-
-  <div class="toolbar">
-    <button class="back-btn tool-btn white" data-action="home">← Πίσω</button>
-    <button class="new-word-btn tool-btn orange" data-action="new-b">🔄 Νέα λέξη</button>
-    <button class="listen-btn tool-btn blue" id="listen-b">🔊 Άκουσε</button>
+  <div class="top-bar">
+    <button class="back-btn" data-action="home">← Πίσω</button>
+    <button class="new-word-btn" data-action="new-b">🔄 Νέα λέξη</button>
   </div>
-
-  <div class="panel">
-    <div class="panel-header" id="read-heading">📖 Διάβασε τη λέξη συλλαβή-συλλαβή</div>
-    <div class="panel-body">
-      <div class="read-row" id="read-row"></div>
-      <div class="hint" id="hint-b"></div>
-    </div>
-  </div>
+  <h2 id="read-heading">Διάβασε τη λέξη συλλαβή-συλλαβή</h2>
+  <div class="read-row" id="read-row"></div>
+  <div class="hint" id="hint-b"></div>
+  <button class="listen-btn" id="listen-b">🔊 Άκουσε</button>
 </div>
 
 <!-- Settings modal -->
@@ -1195,7 +1194,7 @@ function isPhonemeMode(mode = currentMode) {
 
 function setLengthOptions(mode) {
   const config = getMode(mode || "A");
-  $("#length-label").textContent = config.unit === "phoneme" ? "🔢 Πόσα φωνήματα" : "🔢 Πόσες συλλαβές";
+  $("#length-label").textContent = config.unit === "phoneme" ? "Πόσα φωνήματα" : "Πόσες συλλαβές";
   const container = $("#length-choices");
   container.innerHTML = config.lengths
     .map(n => `<button class="choice-btn" data-len="${n}">${n}</button>`)
@@ -1338,15 +1337,10 @@ function renderBuild() {
   const target = getTargetParts();
   const dict = getCurrentDict();
   $("#build-heading").textContent = getMode().pseudo
-    ? "✏️ Άκουσε την ψευδολέξη και βάλε τα φωνήματα στη σειρά"
+    ? "Άκουσε την ψευδολέξη και βάλε τα φωνήματα στη σειρά"
     : phonemeMode
-      ? "✏️ Άκουσε τη λέξη και βάλε τα φωνήματα στη σειρά"
-      : "✏️ Άκουσε τη λέξη και βάλε τις συλλαβές στη σειρά";
-  $("#sub-a").textContent = getMode().pseudo
-    ? `Ψευδολέξεις · ${target.length} φωνήματα`
-    : phonemeMode
-      ? `Φτιάξε τη λέξη με φωνήματα · ${target.length} φωνήματα`
-      : `Φτιάξε τη λέξη με συλλαβές · ${target.length} συλλαβές`;
+      ? "Άκουσε τη λέξη και βάλε τα φωνήματα στη σειρά"
+      : "Άκουσε τη λέξη και βάλε τις συλλαβές στη σειρά";
 
   const slotsEl = $("#slots-a");
   slotsEl.innerHTML = "";
@@ -1631,12 +1625,8 @@ function renderRead() {
   const phonemeMode = isPhonemeMode();
   const dict = getCurrentDict();
   $("#read-heading").textContent = phonemeMode
-    ? "📖 Διάβασε τη λέξη φώνημα-φώνημα"
-    : "📖 Διάβασε τη λέξη συλλαβή-συλλαβή";
-  const partsCount = getTargetParts().length;
-  $("#sub-b").textContent = phonemeMode
-    ? `Διάβασε τη λέξη με φωνήματα · ${partsCount} φωνήματα`
-    : `Διάβασε τη λέξη με συλλαβές · ${partsCount} συλλαβές`;
+    ? "Διάβασε τη λέξη φώνημα-φώνημα"
+    : "Διάβασε τη λέξη συλλαβή-συλλαβή";
 
   const row = $("#read-row");
   row.innerHTML = "";
