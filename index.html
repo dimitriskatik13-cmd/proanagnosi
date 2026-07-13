@@ -359,6 +359,7 @@ h2 {
 .card:hover { border-color: var(--green); }
 .card:focus-visible, .slot:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 .card.read-card { cursor: default; touch-action: auto; }
+.card.read-card.tappable { cursor: pointer; }
 .card.selected {
   border-color: var(--blue);
   box-shadow: 0 0 0 4px var(--blue-soft);
@@ -529,6 +530,7 @@ h2 {
   </div>
   <h2 id="read-heading">Διάβασε τη λέξη συλλαβή-συλλαβή</h2>
   <div class="read-row" id="read-row"></div>
+  <div class="hint" id="hint-b"></div>
   <button class="listen-btn" id="listen-b">🔊 Άκουσε</button>
 </div>
 
@@ -1303,6 +1305,12 @@ function handleTap(card) {
     if (selectedCardEl) selectedCardEl.classList.remove("selected");
     card.classList.add("selected");
     selectedCardEl = card;
+    // Στις συλλαβές η κάρτα "μιλάει" όταν επιλέγεται· στα φωνήματα όχι
+    // (το TTS θα έλεγε το όνομα του γράμματος, π.χ. "βήτα").
+    if (!isPhonemeMode()) {
+      const s = getCurrentDict()[card.dataset.id];
+      if (s) speak(s.text);
+    }
   }
 }
 
@@ -1377,8 +1385,23 @@ function renderRead() {
     const c = document.createElement("div");
     c.className = "card read-card";
     c.innerHTML = `${cardVisualHTML(s)}<span class="text">${s.text}</span>`;
+    if (!phonemeMode) {
+      c.classList.add("tappable");
+      c.tabIndex = 0;
+      c.setAttribute("role", "button");
+      c.setAttribute("aria-label", `Άκουσε: ${s.text}`);
+      const sayIt = () => speak(s.text);
+      c.addEventListener("click", sayIt);
+      c.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          sayIt();
+        }
+      });
+    }
     row.appendChild(c);
   });
+  $("#hint-b").textContent = phonemeMode ? "" : "Πάτησε μια συλλαβή για να την ακούσεις";
 }
 
 $("#listen-b").addEventListener("click", () => speak(currentWord.text));
