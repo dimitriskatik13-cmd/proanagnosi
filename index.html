@@ -63,31 +63,36 @@ body {
 }
 .screen[hidden] { display: none; }
 
-/* ==== Header (logo + subtitle) ==== */
+/* ==== Header (PDF layout: logo left, corporate block right) ==== */
 .app-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E5E7EB;
+  margin-bottom: 14px;
 }
 .app-header .brand {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  text-align: right;
+  align-items: flex-end;
+}
+.app-header .brand .name {
+  font-size: 19px;
+  letter-spacing: 0.08em;
+  color: var(--grey);
+  font-weight: 600;
 }
 .app-header .brand .label {
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 0.18em;
   color: var(--grey);
   opacity: 0.55;
   font-weight: 500;
   text-transform: uppercase;
-}
-.app-header .brand .sub {
-  font-size: 13px;
-  color: var(--grey);
-  opacity: 0.7;
-  font-weight: 400;
 }
 .app-header img.logo {
   height: 56px;
@@ -380,25 +385,36 @@ h2 {
   font-weight: 400;
 }
 
-/* ==== Footer ==== */
+/* ==== Footer (PDF layout: locations left, contact right) ==== */
 .app-footer {
-  text-align: center;
-  padding: 14px 18px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 22px;
+  padding: 12px 0 16px;
+  border-top: 1px solid #E5E7EB;
   color: var(--grey);
   font-size: 12px;
-  opacity: 0.7;
   font-weight: 400;
 }
 .app-footer .locations {
   font-weight: 500;
   letter-spacing: 0.06em;
-  margin-bottom: 4px;
+  opacity: 0.7;
 }
+.app-footer .contact { opacity: 0.7; }
+.app-footer .contact strong { font-weight: 600; }
 
 /* ==== Responsive ==== */
 @media (max-width: 600px) {
   .screen { padding: 12px 14px 18px; }
-  .app-header img.logo { height: 44px; }
+  .app-header img.logo { height: 40px; }
+  .app-header { padding-bottom: 9px; margin-bottom: 10px; }
+  .app-header .brand .name { font-size: 15px; }
+  .app-header .brand .label { font-size: 8.5px; }
+  .app-footer { margin: 0 14px; justify-content: center; text-align: center; font-size: 11px; }
   h1 { font-size: 30px; margin: 14px 0 4px; }
   h2 { font-size: 17px; }
   .subhead { font-size: 14px; margin-bottom: 18px; }
@@ -427,11 +443,13 @@ h2 {
 <!-- HOME -->
 <div id="screen-home" class="screen">
   <div class="app-header">
+    <img src="synoida-logo.png" alt="σύνοιδα" class="logo">
     <div class="brand">
-      <span class="label">ΣΥΝΟΙΔΑ</span>
-      <span class="sub">Κέντρα Ειδικών Θεραπειών</span>
+      <span class="name">Σύνοιδα</span>
+      <span class="label">Κέντρα Ειδικών Θεραπειών</span>
+      <span class="label">Βεντικού Π. &amp; ΣΙΑ Ε.Ε.</span>
+      <span class="label">Κατικαρίδης Δ. &amp; ΣΙΑ Ε.Ε.</span>
     </div>
-    <img src="synoida-logo.png" alt="ΣΥΝΟΙΔΑ" class="logo">
   </div>
 
   <h1>Προανάγνωση<span class="accent"></span></h1>
@@ -454,11 +472,12 @@ h2 {
 <!-- MODE A: Build -->
 <div id="screen-mode-a" class="screen" hidden>
   <div class="app-header">
+    <img src="synoida-logo.png" alt="σύνοιδα" class="logo">
     <div class="brand">
-      <span class="label">ΣΥΝΟΙΔΑ</span>
-      <span class="sub">Προανάγνωση</span>
+      <span class="name">Σύνοιδα</span>
+      <span class="label">Κέντρα Ειδικών Θεραπειών</span>
+      <span class="label">Προανάγνωση</span>
     </div>
-    <img src="synoida-logo.png" alt="ΣΥΝΟΙΔΑ" class="logo">
   </div>
   <div class="top-bar">
     <button class="back-btn" data-action="home">← Πίσω</button>
@@ -478,11 +497,12 @@ h2 {
 <!-- MODE B: Read -->
 <div id="screen-mode-b" class="screen" hidden>
   <div class="app-header">
+    <img src="synoida-logo.png" alt="σύνοιδα" class="logo">
     <div class="brand">
-      <span class="label">ΣΥΝΟΙΔΑ</span>
-      <span class="sub">Προανάγνωση</span>
+      <span class="name">Σύνοιδα</span>
+      <span class="label">Κέντρα Ειδικών Θεραπειών</span>
+      <span class="label">Προανάγνωση</span>
     </div>
-    <img src="synoida-logo.png" alt="ΣΥΝΟΙΔΑ" class="logo">
   </div>
   <div class="top-bar">
     <button class="back-btn" data-action="home">← Πίσω</button>
@@ -496,7 +516,7 @@ h2 {
 <!-- Footer -->
 <div class="app-footer">
   <div class="locations">Αρτέμιδα · Σπάτα · Νέα Μάκρη · Μαραθώνας</div>
-  <div>www.synoida.gr · info@synoida.gr</div>
+  <div class="contact"><strong>info@synoida.gr</strong> · www.synoida.gr</div>
 </div>
 
 <!-- Bottom brand strips -->
