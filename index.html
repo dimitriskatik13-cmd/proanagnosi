@@ -397,24 +397,22 @@ h2 {
 }
 
 /* ==== Settings ==== */
-.home-tools {
-  display: flex;
-  justify-content: flex-end;
-  margin: 2px 0 -34px;
-}
-.icon-btn {
+.settings-btn {
   font-family: inherit;
-  font-size: 19px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid #E5E7EB;
+  font-size: 18px;
+  padding: 13px 32px;
   background: white;
+  color: var(--grey);
+  border: 2px solid #E5E7EB;
+  border-radius: 999px;
+  font-weight: 600;
   cursor: pointer;
+  margin: 18px auto 0;
+  display: block;
   transition: transform 0.1s, border-color 0.18s;
 }
-.icon-btn:hover { border-color: var(--grey); }
-.icon-btn:active { transform: scale(0.94); }
+.settings-btn:hover { border-color: var(--grey); }
+.settings-btn:active { transform: scale(0.96); }
 
 .modal-backdrop {
   position: fixed;
@@ -558,10 +556,6 @@ h2 {
   <h1>Προανάγνωση</h1>
   <p class="subhead">Φτιάξε λέξεις με συλλαβές ή φωνήματα, διάβασε βήμα-βήμα</p>
 
-  <div class="home-tools">
-    <button class="icon-btn" id="settings-btn" aria-label="Ρυθμίσεις" title="Ρυθμίσεις">⚙️</button>
-  </div>
-
   <div class="section-label">Διάλεξε τρόπο</div>
   <div class="choice-row" id="mode-choices">
     <button class="choice-btn" data-mode="A">🧩 Φτιάξε τη λέξη</button>
@@ -575,6 +569,7 @@ h2 {
   <div class="choice-row" id="length-choices"></div>
 
   <button class="start-btn" id="start-btn" disabled>Ξεκίνα</button>
+  <button class="settings-btn" id="settings-btn">⚙️ Ρυθμίσεις</button>
 </div>
 
 <!-- MODE A: Build -->
