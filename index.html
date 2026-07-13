@@ -949,6 +949,17 @@ function launchConfetti() {
   }
 }
 
+// Οι άτονες μεμονωμένες συλλαβές προφέρονται αναξιόπιστα από το TTS
+// (π.χ. "λε" ακούγεται "λι") — τις εκφωνούμε πάντα τονισμένες.
+function accentSyllable(t) {
+  if (t.includes("ου")) return t.replace("ου", "ού");
+  return t.replace("α", "ά").replace("ε", "έ").replace("ι", "ί").replace("ο", "ό");
+}
+
+function speakSyllable(t) {
+  speak(accentSyllable(t));
+}
+
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -1300,7 +1311,7 @@ function handleTap(card) {
     // (το TTS θα έλεγε το όνομα του γράμματος, π.χ. "βήτα").
     if (!isPhonemeMode()) {
       const s = getCurrentDict()[card.dataset.id];
-      if (s) speak(s.text);
+      if (s) speakSyllable(s.text);
     }
   }
 }
@@ -1381,7 +1392,7 @@ function renderRead() {
       c.tabIndex = 0;
       c.setAttribute("role", "button");
       c.setAttribute("aria-label", `Άκουσε: ${s.text}`);
-      const sayIt = () => speak(s.text);
+      const sayIt = () => speakSyllable(s.text);
       c.addEventListener("click", sayIt);
       c.addEventListener("keydown", e => {
         if (e.key === "Enter" || e.key === " ") {
