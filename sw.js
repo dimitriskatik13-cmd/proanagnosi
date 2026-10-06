@@ -7,7 +7,7 @@
    Ανεβαίνει το VERSION σε κάθε δημοσίευση· η λίστα ASSETS καλύπτει όλα τα
    δημόσια αρχεία και ελέγχεται πριν από κάθε δημοσίευση.
    ───────────────────────────────────────────────────────────────────────────── */
-const VERSION = 'proanagnosi-v1';
+const VERSION = 'proanagnosi-v2';
 const CACHE = `synoida-proanagnosi-${VERSION}`;
 const RUNTIME = 'synoida-proanagnosi-runtime';
 const NETWORK_WAIT_MS = 4000;
@@ -200,8 +200,8 @@ const ASSETS = [
   'data/content.js?v=2026-09-12-cues-illustrations-r7',
   'favicon.png',
   'index.html',
-  'src/app.js?v=20261006-r10',
-  'src/updates.js?v=20261006-r10',
+  'src/app.js?v=20261006-r11',
+  'src/updates.js?v=20261006-r11',
   'synoida-logo.png',
 ];
 
